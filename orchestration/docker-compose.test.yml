@@ -1,0 +1,26 @@
+---
+version: '3.7'
+services:
+  database:
+    image: library/postgres
+    environment:
+      POSTGRES_PASSWORD: password
+      PGDATA: "/var/pgdata"
+    networks:
+      local:
+        aliases:
+        - database
+    ports:
+    - "${sidecar-33249:}5432"
+  redis:
+    image: library/redis:7.0
+    networks:
+      local:
+        aliases:
+        - redis
+    ports:
+    - "${sidecar-35463:}6379"
+volumes: {}
+networks:
+  local:
+    name: "${COMPOSE_PROJECT_NAME}"

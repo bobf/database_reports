@@ -1,0 +1,29 @@
+---
+version: '3.7'
+services:
+  database:
+    image: library/postgres
+    environment:
+      POSTGRES_PASSWORD: password
+      PGDATA: "/var/pgdata"
+    networks:
+      local:
+        aliases:
+        - database
+    ports:
+    - 60601:5432
+    volumes:
+    - database:/var/pgdata
+  redis:
+    image: library/redis:7.0
+    networks:
+      local:
+        aliases:
+        - redis
+    ports:
+    - 45061:6379
+volumes:
+  database: {}
+networks:
+  local:
+    name: "${COMPOSE_PROJECT_NAME}"

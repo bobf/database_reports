@@ -1,0 +1,31 @@
+default: &default
+  adapter: postgresql
+
+development:
+  <<: *default
+  host: 127.0.0.1
+  port: 60601
+  username: postgres
+  password: password
+  database: development
+  <% if ENV.key?('DEVELOPMENT_DATABASE_URL') %>
+  url: <%= ENV['DEVELOPMENT_DATABASE_URL'] %>
+  <% end %>
+
+test:
+  <<: *default
+  host: 127.0.0.1
+  port: 33249
+  username: postgres
+  password: password
+  database: test
+  # Useful for certain continuous integration environments (e.g. Jenkins in
+  # Docker) where the DB hostname may be a service name rather than `127.0.0.1`:
+  <% if ENV.key?('TEST_DATABASE_URL') %>
+  url: <%= ENV['TEST_DATABASE_URL'] %>
+  <% end %>
+
+
+production:
+  <<: *default
+  url: <%= ENV['DATABASE_URL'] %>

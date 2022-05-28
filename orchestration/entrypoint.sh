@@ -1,0 +1,17 @@
+#!/bin/sh
+HOST_UID=${HOST_UID:-$(id -u)}
+set -e
+id owner >/dev/null 2>&1 || useradd -u ${HOST_UID} -m -o owner
+mkdir -p /app/tmp/pids /app/log /app/db
+chown -Rf owner:owner /app/tmp /app/log /app/db
+rm -f /app/tmp/pids/server.pid
+
+DOCKER_HOST_IP="$(ip route | awk '/default/ { print $3 }' 2>/dev/null)"
+if printf "${DOCKER_HOST_IP}" | egrep -q '([0-9]{1,3}[\.]){3}[0-9]{1,3}' \
+&& [ ! $(grep -q "${DOCKER_HOST_IP} host.docker.internal" '/etc/hosts') ]
+then
+   echo "Host IP: ${DOCKER_HOST_IP}"
+   echo "${DOCKER_HOST_IP} host.docker.internal" >> '/etc/hosts'
+fi
+
+exec gosu owner "$@"

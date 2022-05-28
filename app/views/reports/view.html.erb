@@ -1,0 +1,33 @@
+<% if @error.present? %>
+  <div class="container">
+    <h1 class="font-medium leading-tight text-5xl mt-0 mb-2">Error executing query</h1>
+    <p class="text-red-500 font-mono py-3"><%= @error %></p>
+  </div>
+<% else %>
+  <div class="container">
+    <div class="container pb-3">
+      <%= link_to @report.name, report_path(@report), class: 'font-medium leading-tight text-purple-500 text-5xl mt-0 mb-2' %>
+      <p class="text-gray-500 italic">Report generated <%= Time.now.utc.strftime('%Y-%m-%d %H:%M:%S UTC') %></p>
+      <p class="text-gray-500 italic"><%= pluralize(@output.rows.size, 'row') %></p>
+    </div>
+
+  <div class="container">
+    <table class="report-view">
+      <thead>
+        <% @output.columns.each do |column| %>
+          <th class="font-mono px-3 py-3 border"><%= column %></th>
+        <% end %>
+      </thead>
+
+      <tbody>
+        <% @output.rows.each do |row| %>
+          <tr>
+            <% row.each do |value| %>
+              <td class="font-mono border px-3 py-3"><%= value %></td>
+            <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% end %>

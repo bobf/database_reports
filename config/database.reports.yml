@@ -1,0 +1,34 @@
+default: &default
+  adapter: postgresql
+  migrations_paths:
+  - 'db/migrate_reports'
+
+development:
+  <<: *default
+  host: 127.0.0.1
+  port: 33251
+  username: postgres
+  password: password
+  database: development
+  <% if ENV.key?('DEVELOPMENT_REPORT_DATABASE_URL') %>
+  url: <%= ENV['DEVELOPMENT_REPORT_DATABASE_URL'] %>
+  <% end %>
+
+test:
+  <<: *default
+  host: 127.0.0.1
+  port: 33250
+  username: postgres
+  password: password
+  database: test
+  <% if ENV.key?('TEST_REPORT_DATABASE_URL') %>
+  url: <%= ENV['TEST_REPORT_DATABASE_URL'] %>
+  <% end %>
+
+staging:
+  <<: *default
+  url: <%= ENV['REPORT_DATABASE_URL'] %>
+
+production:
+  <<: *default
+  url: <%= ENV['REPORT_DATABASE_URL'] %>

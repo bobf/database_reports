@@ -14,6 +14,19 @@ services:
     - 60601:5432
     volumes:
     - database:/var/pgdata
+  database-reports:
+    image: library/postgres
+    environment:
+      POSTGRES_PASSWORD: password
+      PGDATA: "/var/pgdata"
+    networks:
+      local:
+        aliases:
+        - database-reports
+    ports:
+    - 33251:5432
+    volumes:
+    - database-reports:/var/pgdata
   redis:
     image: library/redis:7.0
     networks:
@@ -24,6 +37,7 @@ services:
     - 45061:6379
 volumes:
   database: {}
+  database-reports: {}
 networks:
   local:
     name: "${COMPOSE_PROJECT_NAME}"

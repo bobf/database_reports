@@ -12,6 +12,17 @@ services:
         - database
     ports:
     - "${sidecar-33249:}5432"
+  database-reports:
+    image: library/postgres
+    environment:
+      POSTGRES_PASSWORD: password
+      PGDATA: "/var/pgdata"
+    networks:
+      local:
+        aliases:
+        - database-reports
+    ports:
+    - "${sidecar-33250:}5432"
   redis:
     image: library/redis:7.0
     networks:

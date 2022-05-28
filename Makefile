@@ -25,7 +25,8 @@ test:
 #
 .PHONY: post-setup
 post-setup:
-	@# Setup tasks that are not already provided by Orchestration go here.
+	bundle exec rake db:reports:create
+	bundle exec rake db:reports:migrate
 
 #
 # Launch all dependencies needed for a development environment and set up the

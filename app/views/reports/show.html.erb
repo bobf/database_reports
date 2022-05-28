@@ -1,0 +1,28 @@
+<div class="report container">
+  <h1 class="font-medium leading-tight text-5xl mt-0 mb-2"><%= @report.name %></h1>
+  <table class="table-auto">
+    <tbody>
+      <tr>
+        <th class="px-4 py-3 text-left">Subject</th>
+        <td class="px-4 py-3"><%= @report.subject %></td>
+      </tr>
+      <tr>
+        <th class="px-4 py-3 text-left">Created</th>
+        <td class="px-4 py-3"><%= @report.created_at.strftime('%Y-%m-%d %H:%M') %></td>
+      </tr>
+      <tr>
+        <th class="px-4 py-3 text-left">Last Updated</th>
+        <td class="px-4 py-3"><%= @report.updated_at.strftime('%Y-%m-%d %H:%M') %></td>
+      </tr>
+      <tr>
+        <th class="px-4 py-3 text-left">Query</th>
+        <td class="px-4 py-3 font-mono"><%= @report.query %></td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="container px-2 py-3">
+    <%= link_to 'Configure', edit_report_path(@report), class: 'bg-yellow-300 hover:bg-blue-700 mr-2 text-white font-bold py-2 px-4 rounded' %>
+    <%= link_to 'Query Now', view_report_path(@report), class: 'bg-green-300 hover:bg-blue-700 mr-2 text-white font-bold py-2 px-4 rounded' %>
+    <%= link_to 'Export Results', export_report_path(@report), class: 'bg-purple-500 hover:bg-blue-700 mr-2 text-white font-bold py-2 px-4 rounded' %>
+  </div>
+</div>

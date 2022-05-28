@@ -2,3 +2,13 @@ AllCops:
   NewCops: enable
   Exclude:
   - 'bin/**/*'
+  - 'db/schema.rb'
+
+Style/Documentation:
+  Exclude:
+  - 'db/migrate/*.rb'
+  - 'db/migrate_reports/*.rb'
+
+Metrics/BlockLength:
+  Exclude:
+  - 'spec/**/*_spec.rb'

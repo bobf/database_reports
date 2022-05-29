@@ -12,6 +12,18 @@ RSpec.describe '/reports' do
       post '/reports', params: { report: { name: 'my new report', subject: 'my subject', query: 'query' } }
       expect(response).to redirect_to "/reports/#{Report.first.id}"
     end
+
+    it 'converts email address strings to an array' do
+      post '/reports', params: {
+        report: {
+          name: 'my new report',
+          subject: 'my subject',
+          query: 'query',
+          to_recipients: 'user1@example.com, user2@example.com'
+        }
+      }
+      expect(Report.first.to_recipients).to eql %w[user1@example.com user2@example.com]
+    end
   end
 
   describe 'GET /reports' do
@@ -93,6 +105,28 @@ RSpec.describe '/reports' do
 
     it 'generates filename' do
       expect(response.headers['content-disposition']).to include 'filename="my report 2022-05-28 15_13_47.csv";'
+    end
+  end
+
+  describe 'GET /reports/:id/email' do
+    let!(:report) { create(:report) }
+    let(:mail) { ActionMailer::Base.deliveries.last }
+
+    before { create(:example_report_data) }
+    before { get "/reports/#{report.id}/email" }
+
+    it 'emails report' do
+      parse_html(mail.html_part.decoded)
+      expect(document.table('.report-view').td).to match_text 'example value'
+    end
+
+    it 'attaches csv report' do
+      csv = CSV.parse(mail.attachments.first.body.decoded)
+      expect(csv.last).to eql ['example value']
+    end
+
+    it 'displays confirmation flash message' do
+      expect(document.div('.flash.notice')).to match_text 'Report delivered to to@example.com'
     end
   end
 end

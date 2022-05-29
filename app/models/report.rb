@@ -8,6 +8,18 @@ class Report < ApplicationRecord
 
   FILENAME_CHARACTERS = ('a'..'z').to_a + ('A'..'Z').to_a + ['0'..'9'].to_a + [' '] + %w[-_()]
 
+  def to_recipients=(val)
+    super(translated_email_addresses(val))
+  end
+
+  def cc_recipients=(val)
+    super(translated_email_addresses(val))
+  end
+
+  def bcc_recipients=(val)
+    super(translated_email_addresses(val))
+  end
+
   def csv
     ([output.columns] + output.rows).map(&:to_csv).join
   end
@@ -24,5 +36,11 @@ class Report < ApplicationRecord
 
   def sanitized_name
     name.chars.select { |char| FILENAME_CHARACTERS.include?(char) }.join
+  end
+
+  def translated_email_addresses(addresses)
+    return addresses unless addresses.is_a?(String)
+
+    addresses.split(',').map(&:strip)
   end
 end

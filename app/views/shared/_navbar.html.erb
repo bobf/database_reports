@@ -14,4 +14,7 @@
       <%= link_to 'List Reports', reports_path, class: 'block mt-4 lg:inline-block lg:mt-0 text-purple-200 hover:text-white mr-4' %>
     </div>
   </div>
+  <% if flash[:notice].present? %>
+    <div class="flash notice float-right px-3 py-3 bg-cyan-500 rounded-md animate-fade-out"><%= flash[:notice].html_safe %></div>
+  <% end %>
 </nav>

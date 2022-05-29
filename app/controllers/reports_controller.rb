@@ -35,13 +35,23 @@ class ReportsController < ApplicationController
   def view
     @report = report
     @output = report.output
-  rescue ActiveRecord::StatementInvalid, ActiveRecord::DatabaseConnectionError => e
+  rescue *database_errors => e
     @error = e.message
   end
 
   def export
     send_data report.csv, type: 'text/csv', disposition: 'attachment', filename: report.filename
-  rescue ActiveRecord::StatementInvalid, ActiveRecord::DatabaseConnectionError => e
+  rescue *database_errors => e
+    @error = e.message
+    render :view
+  end
+
+  def email
+    @report = report
+    ReportMailer.with(report: @report).report_mail.deliver_now
+    flash[:notice] = "Report delivered to #{@report.to_recipients.join(', ')} &check;"
+    render :show
+  rescue *database_errors => e
     @error = e.message
     render :view
   end
@@ -55,5 +65,9 @@ class ReportsController < ApplicationController
   def report_params
     params.require(:report)
           .permit(:name, :query, :to_recipients, :cc_recipients, :bcc_recipients, :subject)
+  end
+
+  def database_errors
+    [ActiveRecord::StatementInvalid, ActiveRecord::DatabaseConnectionError]
   end
 end

@@ -4,6 +4,7 @@ source 'https://rubygems.org'
 
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
+gem 'actionmailer_inline_css', '~> 1.6'
 gem 'bootsnap', '~> 1.11'
 gem 'importmap-rails', '~> 1.1'
 gem 'jbuilder', '~> 2.11'

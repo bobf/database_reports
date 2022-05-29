@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     member do
       get 'view'
       get 'export'
+      get 'email'
     end
   end
 end

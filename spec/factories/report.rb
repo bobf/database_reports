@@ -5,5 +5,6 @@ FactoryBot.define do
     name { 'my report' }
     subject { 'my subject' }
     query { 'select example_column as "example column" from example_table' }
+    to_recipients { ['to@example.com'] }
   end
 end

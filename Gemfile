@@ -4,16 +4,16 @@ source 'https://rubygems.org'
 
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-gem 'actionmailer_inline_css', '~> 1.6'
 gem 'bootsnap', '~> 1.11'
 gem 'importmap-rails', '~> 1.1'
 gem 'jbuilder', '~> 2.11'
 gem 'mysql2', '~> 0.5.4'
-gem 'orchestration', github: 'bobf/orchestration'
+gem 'orchestration', '~> 0.7.1'
 gem 'pg', '~> 1.3'
 gem 'puma', '~> 5.0'
 gem 'rails', '~> 7.0'
 gem 'redis', '~> 4.0'
+gem 'roadie-rails', '~> 3.0'
 gem 'sprockets-rails', '~> 3.4'
 gem 'sqlite3', '~> 1.4'
 gem 'stimulus-rails', '~> 1.0'

@@ -16,7 +16,12 @@ services:
       WEB_CONCURRENCY:
       WEB_TIMEOUT:
       WEB_WORKER_PROCESSES:
-      REDIS_URL: redis://redis-local:6379
+      REPORT_DATABASE_URL:
+      MAILER_URL_PROTOCOL:
+      MAILER_URL_HOST:
+      MAILER_SMTP_HOST:
+      MAILER_SMTP_PORT:
+      MAILER_SMTP_DOMAIN:
     ports:
     - "${PUBLISH_PORT:?PUBLISH_PORT must be provided}:8080"
     deploy:
@@ -31,6 +36,37 @@ services:
       local:
         aliases:
         - app-local
+  worker:
+    image: "${DOCKER_ORGANIZATION}/${DOCKER_REPOSITORY}:${DOCKER_TAG}"
+    healthcheck:
+      disable: true
+    environment:
+      RAILS_LOG_TO_STDOUT: '1'
+      DATABASE_URL: postgresql://postgres:password@database-local:5432/production
+      HOST_UID:
+      RAILS_ENV:
+      SECRET_KEY_BASE:
+      WEB_CONCURRENCY:
+      WEB_TIMEOUT:
+      WEB_WORKER_PROCESSES:
+      REPORT_DATABASE_URL:
+      MAILER_URL_PROTOCOL:
+      MAILER_URL_HOST:
+      MAILER_SMTP_HOST:
+      MAILER_SMTP_PORT:
+      MAILER_SMTP_DOMAIN:
+    deploy:
+      mode: replicated
+      replicas: 1
+    networks:
+      local:
+        aliases:
+        - worker-local
+      command:
+        - bundle
+        - exec
+        - rake
+        - reports:worker
   database:
     image: library/postgres
     environment:
@@ -42,12 +78,7 @@ services:
         - database-local
     volumes:
     - database:/var/pgdata
-  redis:
-    image: library/redis:7.0
-    networks:
-      local:
-        aliases:
-        - redis-local
+
 volumes:
   database: {}
 networks:

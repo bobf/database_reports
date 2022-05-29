@@ -1,7 +1,7 @@
 <nav class="flex items-center justify-between flex-wrap bg-purple-500 p-6">
   <div class="flex items-center flex-shrink-0 text-white mr-6">
+    <img src="/database.svg" class="w-8 mr-4" />
     <span class="font-semibold text-xl tracking-tight">Database Reports</span>
-    <img src="/database.svg" class="w-8 ml-4" />
   </div>
   <div class="block lg:hidden">
     <button class="flex items-center px-3 py-2 border rounded text-purple-200 border-purple-400 hover:text-white hover:border-white">
@@ -16,5 +16,6 @@
   </div>
   <% if flash[:notice].present? %>
     <div class="flash notice float-right px-3 py-3 bg-cyan-500 rounded-md animate-fade-out"><%= flash[:notice].html_safe %></div>
+    <% flash[:notice] = nil %>
   <% end %>
 </nav>

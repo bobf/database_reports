@@ -6,5 +6,6 @@ FactoryBot.define do
     subject { 'my subject' }
     query { 'select example_column as "example column" from example_table' }
     to_recipients { ['to@example.com'] }
+    schedule_type { 'none' }
   end
 end

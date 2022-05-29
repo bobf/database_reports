@@ -14,7 +14,13 @@ Rails.application.configure do
   config.log_tags = [:request_id]
   config.action_mailer.default_url_options = {
     protocol: ENV.fetch('MAILER_URL_PROTOCOL', 'https'),
-    host: ENV.fetch('MAILER_URL_HOST', 'example.com')
+    host: ENV.fetch('MAILER_URL_HOST', 'example.com'),
+    port: ENV.fetch('MAILER_URL_PORT', nil)
+  }
+  config.action_mailer.smtp_settings = {
+    address: ENV.fetch('MAILER_SMTP_HOST', nil),
+    port: ENV.fetch('MAILER_SMTP_PORT', '25'),
+    domain: ENV.fetch('MAILER_SMTP_DOMAIN', 'example.com')
   }
   config.action_mailer.perform_caching = false
   config.i18n.fallbacks = true

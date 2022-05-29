@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_05_28_125142) do
+ActiveRecord::Schema[7.0].define(version: 2022_05_29_112934) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -24,6 +24,14 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_28_125142) do
     t.jsonb "bcc_recipients"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "schedule_day"
+    t.time "schedule_time"
+    t.string "schedule_type"
+    t.datetime "last_reported_at"
+    t.index ["last_reported_at"], name: "index_reports_on_last_reported_at"
+    t.index ["schedule_day"], name: "index_reports_on_schedule_day"
+    t.index ["schedule_time"], name: "index_reports_on_schedule_time"
+    t.index ["schedule_type"], name: "index_reports_on_schedule_type"
   end
 
 end

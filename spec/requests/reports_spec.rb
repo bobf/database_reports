@@ -3,13 +3,27 @@
 RSpec.describe '/reports' do
   describe 'POST /reports' do
     it 'creates a new report' do
-      post '/reports', params: { report: { name: 'my new report', subject: 'my subject', query: 'query' } }
+      post '/reports', params: {
+        report: {
+          name: 'my new report',
+          subject: 'my subject',
+          query: 'query',
+          schedule_type: 'none'
+        }
+      }
       get '/reports'
       expect(document.table('.reports')).to match_text 'my new report'
     end
 
     it 'redirects to show page' do
-      post '/reports', params: { report: { name: 'my new report', subject: 'my subject', query: 'query' } }
+      post '/reports', params: {
+        report: {
+          name: 'my new report',
+          subject: 'my subject',
+          query: 'query',
+          schedule_type: 'none'
+        }
+      }
       expect(response).to redirect_to "/reports/#{Report.first.id}"
     end
 
@@ -19,10 +33,26 @@ RSpec.describe '/reports' do
           name: 'my new report',
           subject: 'my subject',
           query: 'query',
+          schedule_type: 'none',
           to_recipients: 'user1@example.com, user2@example.com'
         }
       }
       expect(Report.first.to_recipients).to eql %w[user1@example.com user2@example.com]
+    end
+
+    it 'translates schedule time' do
+      post '/reports', params: {
+        report: {
+          name: 'my new report',
+          subject: 'my subject',
+          query: 'query',
+          schedule_type: 'daily',
+          schedule_time: '14:30',
+          to_recipients: 'user1@example.com, user2@example.com'
+        }
+      }
+      report = Report.first.schedule_time
+      expect([report.hour, report.min]).to eql [14, 30]
     end
   end
 

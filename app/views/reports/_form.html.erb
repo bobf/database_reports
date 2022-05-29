@@ -1,5 +1,6 @@
 <% label_class = 'block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2' %>
-<% input_class = 'appearance-none block w-full bg-gray-200 text-gray-700 border border-purple-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white' %>
+<% input_defaults = 'bg-gray-700 text-gray-300 border rounded focus:outline-none' %>
+<% input_class = "appearance-none block w-full focus:text-gray-600 px-4 py-3 mb-3 leading-tight border-purple-500 focus:bg-white #{input_defaults}" %>
 <% info_class = 'text-gray-600 text-xs italic' %>
 <% error_class = 'text-red-600 text-xs italic' %>
 
@@ -21,6 +22,42 @@
       <% if @report.errors[:subject].present? %>
         <p class="<%= error_class %>">Subject <%= @report.errors[:subject].join(', ') %></p>
       <% end %>
+    </div>
+  </div>
+
+  <%= form.label 'Schedule', class: label_class %>
+  <div class="flex flex-wrap -mx-3 mb-1">
+    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+      <%= form.radio_button :schedule_type, :daily, class: "schedule-type #{input_defaults} focus:bg-purple-800 checked:bg-purple-500 float-left mr-1" %>
+      <%= form.label 'Daily', class: "#{label_class} float-left" %>
+      <%= form.radio_button :schedule_type, :weekly, class: "schedule-type #{input_defaults} focus:bg-purple-800 checked:bg-purple-500 float-left ml-3 mr-1" %>
+      <%= form.label 'Weekly', class: "#{label_class} float-left" %>
+      <%= form.radio_button :schedule_type,
+                            :none,
+                            checked: @report.schedule_type == 'none' || @report.schedule_type.blank?,
+                            class: "schedule-type #{input_defaults} focus:bg-purple-800 checked:bg-purple-500 float-left ml-3 mr-1" %>
+      <%= form.label 'None', class: "#{label_class} float-left" %>
+    </div>
+  </div>
+
+  <div class="flex flex-wrap -mx-3 mb-6">
+    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+      <%= form.label 'Time', class: label_class %>
+      <%= form.text_field :schedule_time,
+                          placeholder: '14:30',
+                          value: @report.schedule_time&.strftime('%H:%M'),
+                          class: "schedule-time #{input_class} disabled:bg-gray:900 disabled:border-gray-800",
+                          disabled: !%w[daily weekly].include?(@report.schedule_type) %>
+      <p class="<%= info_class %>">Time of day to generate report: HH:MM</p>
+      <% if @report.errors[:schedule_time].present? %>
+        <p class="<%= error_class %>">Schedule time <%= @report.errors[:schedule_time].join(', ') %></p>
+      <% end %>
+    </div>
+
+    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+      <%= form.label 'Weekday', class: label_class %>
+      <%= form.select :schedule_day, Date::DAYNAMES.each.with_index.to_a, {}, { class: "schedule-day #{input_class} disabled:bg-gray:900 disabled:border-gray-800", disabled: @report.schedule_type != 'weekly' } %>
+      <p class="<%= info_class %>">Day of week to generate report.</p>
     </div>
   </div>
 

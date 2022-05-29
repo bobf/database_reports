@@ -1,0 +1,7 @@
+<div class="summary container pb-3">
+  <%= link_to @report.name, report_url, class: 'font-medium leading-tight text-purple-500 text-5xl mt-0 mb-2' %>
+  <p class="text-gray-500 italic">Generated <%= Time.now.utc.strftime('%Y-%m-%d %H:%M:%S UTC') %></p>
+  <% if @output.present? %>
+    <p class="text-gray-500 italic"><%= pluralize(@output.rows.size, 'row') %></p>
+  <% end %>
+</div>

@@ -1,15 +1,3 @@
-GIT
-  remote: https://github.com/bobf/orchestration.git
-  revision: ff00bc4bfcd469c6f7e8ee395986fb40e2be1e75
-  specs:
-    orchestration (0.7.1)
-      database_url (~> 0.1.2)
-      erubis (~> 2.7)
-      i18n
-      paint (~> 2.2)
-      rails (>= 6.1)
-      thor (~> 1.2)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -38,10 +26,6 @@ GEM
       net-pop
       net-smtp
       rails-dom-testing (~> 2.0)
-    actionmailer_inline_css (1.6.0)
-      actionmailer (>= 3.0.0)
-      nokogiri (>= 1.7.0)
-      premailer (>= 1.11.0)
     actionpack (7.0.3)
       actionview (= 7.0.3)
       activesupport (= 7.0.3)
@@ -119,7 +103,6 @@ GEM
       railties (>= 5.0.0)
     globalid (1.0.0)
       activesupport (>= 5.0)
-    htmlentities (4.3.4)
     i18n (1.10.0)
       concurrent-ruby (~> 1.0)
     importmap-rails (1.1.0)
@@ -160,15 +143,18 @@ GEM
     nio4r (2.5.8)
     nokogiri (1.13.6-x86_64-linux)
       racc (~> 1.4)
+    orchestration (0.7.1)
+      database_url (~> 0.1.2)
+      erubis (~> 2.7)
+      i18n
+      paint (~> 2.2)
+      rails (>= 6.1)
+      thor (~> 1.2)
     paint (2.2.1)
     parallel (1.22.1)
     parser (3.1.2.0)
       ast (~> 2.4.1)
     pg (1.3.5)
-    premailer (1.16.0)
-      addressable
-      css_parser (>= 1.6.0)
-      htmlentities (>= 4.0.0)
     public_suffix (4.0.7)
     puma (5.6.4)
       nio4r (~> 2.0)
@@ -209,6 +195,12 @@ GEM
     reline (0.3.1)
       io-console (~> 0.5)
     rexml (3.2.5)
+    roadie (5.0.1)
+      css_parser (~> 1.4)
+      nokogiri (~> 1.8)
+    roadie-rails (3.0.0)
+      railties (>= 5.1, < 7.1)
+      roadie (~> 5.0)
     rspec (3.11.0)
       rspec-core (~> 3.11.0)
       rspec-expectations (~> 3.11.0)
@@ -303,7 +295,6 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  actionmailer_inline_css (~> 1.6)
   bootsnap (~> 1.11)
   capybara (~> 3.37)
   debug (~> 1.5)
@@ -312,11 +303,12 @@ DEPENDENCIES
   importmap-rails (~> 1.1)
   jbuilder (~> 2.11)
   mysql2 (~> 0.5.4)
-  orchestration!
+  orchestration (~> 0.7.1)
   pg (~> 1.3)
   puma (~> 5.0)
   rails (~> 7.0)
   redis (~> 4.0)
+  roadie-rails (~> 3.0)
   rspec-html (~> 0.2.9)
   rspec-rails (~> 5.1)
   rubocop (~> 1.30)

@@ -17,6 +17,8 @@ namespace :db do
       require Rails.root.join('db/migrate_reports/20220528140514_create_example_table.rb')
       ActiveRecord::Base.establish_connection(config)
       CreateExampleTable.new.change
+    rescue PG::DuplicateTable => e
+      warn e
     end
   end
 end

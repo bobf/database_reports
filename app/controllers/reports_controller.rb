@@ -28,8 +28,11 @@ class ReportsController < ApplicationController
   end
 
   def update
-    report.update!(report_params)
-    redirect_to report_path(report)
+    if report.update(report_params)
+      redirect_to report_path(report)
+    else
+      render :edit
+    end
   end
 
   def view
@@ -64,10 +67,13 @@ class ReportsController < ApplicationController
 
   def report_params
     params.require(:report)
-          .permit(:name, :query, :to_recipients, :cc_recipients, :bcc_recipients, :subject)
+          .permit(
+            :name, :query, :to_recipients, :cc_recipients, :bcc_recipients, :subject,
+            :schedule_day, :schedule_time, :schedule_type
+          )
   end
 
   def database_errors
-    [ActiveRecord::StatementInvalid, ActiveRecord::DatabaseConnectionError]
+    DatabaseReports::EXPECTED_DATABASE_ERRORS
   end
 end

@@ -1,8 +1,5 @@
 <% if @error.present? %>
-  <div class="container">
-    <h1 class="font-medium leading-tight text-5xl mt-0 mb-2">Error executing query</h1>
-    <p class="text-red-500 font-mono py-3"><%= @error %></p>
-  </div>
+  <%= render partial: 'shared/error', locals: { report_url: report_path(@report) } %>
 <% else %>
   <%= render partial: 'shared/report', locals: { report_url: report_path(@report) } %>
 <% end %>

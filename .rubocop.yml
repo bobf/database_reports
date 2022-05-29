@@ -12,3 +12,4 @@ Style/Documentation:
 Metrics/BlockLength:
   Exclude:
   - 'spec/**/*_spec.rb'
+  - 'config/environments/*.rb'

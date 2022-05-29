@@ -3,47 +3,62 @@
   <table class="table-auto">
     <tbody>
       <tr>
-        <th class="px-4 py-3 text-left">Subject</th>
+        <th class="px-4 py-3 text-left">Email Subject</th>
         <td class="px-4 py-3"><%= @report.subject %></td>
       </tr>
+
       <% if @report.to_recipients.present? %>
-      <tr>
-        <th class="px-4 py-3 text-left">Recipients (To:)</th>
-        <td class="px-4 py-3"><%= @report.to_recipients.join(', ') %></td>
-      </tr>
+        <tr>
+          <th class="px-4 py-3 text-left">Recipients (To:)</th>
+          <td class="px-4 py-3"><%= @report.to_recipients.join(', ') %></td>
+        </tr>
       <% end %>
+
       <% if @report.cc_recipients.present? %>
-      <tr>
-        <th class="px-4 py-3 text-left">Recipients (Cc:)</th>
-        <td class="px-4 py-3"><%= @report.cc_recipients.join(', ') %></td>
-      </tr>
+        <tr>
+          <th class="px-4 py-3 text-left">Recipients (Cc:)</th>
+          <td class="px-4 py-3"><%= @report.cc_recipients.join(', ') %></td>
+        </tr>
       <% end %>
+
       <% if @report.bcc_recipients.present? %>
-      <tr>
-        <th class="px-4 py-3 text-left">Recipients (Bcc:)</th>
-        <td class="px-4 py-3"><%= @report.bcc_recipients.join(', ') %></td>
-      </tr>
+        <tr>
+          <th class="px-4 py-3 text-left">Recipients (Bcc:)</th>
+          <td class="px-4 py-3"><%= @report.bcc_recipients.join(', ') %></td>
+        </tr>
       <% end %>
-      <tr>
-        <th class="px-4 py-3 text-left">Created</th>
-        <td class="px-4 py-3"><%= @report.created_at.strftime('%Y-%m-%d %H:%M') %></td>
-      </tr>
-      <tr>
-        <th class="px-4 py-3 text-left">Last Updated</th>
-        <td class="px-4 py-3"><%= @report.updated_at.strftime('%Y-%m-%d %H:%M') %></td>
-      </tr>
+
+      <% if %w[daily weekly].include?(@report.schedule_type) %>
+        <tr>
+          <th class="px-4 py-3 text-left">Schedule</th>
+          <td class="px-4 py-3">
+            <% if @report.schedule_type == 'weekly' %>
+              Every <span class="font-bold text-purple-500"><%= Date::DAYNAMES[@report.schedule_day] %></span> at
+            <% elsif @report.schedule_type == 'daily' %>
+              <span class="font-bold text-purple-500">Daily</span> at
+            <% end %>
+              <span class="font-bold text-purple-500"><%= @report.schedule_time&.strftime('%H:%M') %></span>
+          </td>
+        </tr>
+      <% end %>
+
       <tr>
         <th class="px-4 py-3 text-left">Query</th>
         <td class="px-4 py-3 font-mono"><%= @report.query %></td>
       </tr>
+
+      <tr>
+        <th class="px-4 py-3 text-left">Last Edited</th>
+        <td class="px-4 py-3"><%= @report.updated_at.strftime('%Y-%m-%d %H:%M') %> UTC</td>
+      </tr>
     </tbody>
   </table>
   <div class="container px-2 py-3">
-    <%= link_to 'Configure Report', edit_report_path(@report), class: 'bg-yellow-300 hover:bg-blue-700 mr-2 text-white font-bold py-2 px-4 rounded' %>
-    <%= link_to 'View Results', view_report_path(@report), class: 'bg-green-300 hover:bg-blue-700 mr-2 text-white font-bold py-2 px-4 rounded' %>
-    <%= link_to 'Export CSV', export_report_path(@report), class: 'bg-purple-500 hover:bg-blue-700 mr-2 text-white font-bold py-2 px-4 rounded' %>
+    <%= link_to 'Configure Report', edit_report_path(@report), class: 'bg-yellow-600 hover:bg-blue-700 mr-2 text-white font-bold py-2 px-4 rounded' %>
+    <%= link_to 'View Results', view_report_path(@report), class: 'bg-green-600 hover:bg-blue-700 mr-2 text-white font-bold py-2 px-4 rounded' %>
+    <%= link_to 'Export CSV', export_report_path(@report), class: 'bg-purple-600 hover:bg-blue-700 mr-2 text-white font-bold py-2 px-4 rounded' %>
     <% if @report.to_recipients.present? %>
-      <%= link_to 'Email Now', email_report_path(@report), class: 'bg-blue-300 hover:bg-blue-700 mr-2 text-white font-bold py-2 px-4 rounded' %>
+      <%= link_to 'Email Now', email_report_path(@report), class: 'bg-blue-600 hover:bg-blue-700 mr-2 text-white font-bold py-2 px-4 rounded' %>
     <% end %>
   </div>
 </div>

@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 RSpec.describe '/reports' do
+  let(:user) { create(:user) }
+
+  before { sign_in user }
+
   describe 'POST /reports' do
     it 'creates a new report' do
       post '/reports', params: {
@@ -58,15 +62,21 @@ RSpec.describe '/reports' do
 
   describe 'GET /reports' do
     it 'shows list of reports' do
-      create(:report)
+      create(:report, user:)
       get '/reports'
       expect(document.table('.reports')).to match_text 'my report'
+    end
+
+    it "excludes other user's reports" do
+      create(:report, user: create(:user))
+      get '/reports'
+      expect(document.table('.reports')).to_not match_text 'my report'
     end
   end
 
   describe 'GET /reports/:id' do
     it 'shows a report' do
-      report = create(:report)
+      report = create(:report, user:)
       get "/reports/#{report.id}"
       expect(document.div('.report')).to match_text 'my report'
     end
@@ -81,44 +91,62 @@ RSpec.describe '/reports' do
 
   describe 'GET /reports/:id/edit' do
     it 'shows a form for editing a report' do
-      report = create(:report)
+      report = create(:report, user:)
       get "/reports/#{report.id}/edit"
       expect(document.form('.report').input(name: 'report[name]', value: 'my report')).to exist
+    end
+
+    it "does not edit other user's reports" do
+      report = create(:report, user: create(:user))
+      get "/reports/#{report.id}/edit"
+      expect(document).to match_text 'you are not authorized to access'
     end
   end
 
   describe 'PATCH /reports/:id' do
     it 'updates an existing report' do
-      report = create(:report)
+      report = create(:report, user:)
       patch "/reports/#{report.id}", params: { report: { name: 'my edited report' } }
       expect(report.reload.name).to eql 'my edited report'
     end
 
     it 'redirects to show page' do
-      report = create(:report)
+      report = create(:report, user:)
       patch "/reports/#{report.id}", params: { report: { name: 'my edited report' } }
       expect(response).to redirect_to "/reports/#{report.id}"
+    end
+
+    it "rejects access to other user's reports" do
+      report = create(:report, user: create(:user))
+      patch "/reports/#{report.id}", params: { report: { name: 'my edited report' } }
+      expect(document).to match_text 'you are not authorized to access'
     end
   end
 
   describe 'GET /reports/:id/view' do
-    let!(:report) { create(:report) }
-
     before { create(:example_report_data) }
 
     it 'shows report output columns' do
+      report = create(:report, user:)
       get "/reports/#{report.id}/view"
       expect(document.table('.report-view')).to match_text 'example column'
     end
 
     it 'shows report output values' do
+      report = create(:report, user:)
       get "/reports/#{report.id}/view"
       expect(document.table('.report-view')).to match_text 'example value'
+    end
+
+    it "rejects access to other user's reports" do
+      report = create(:report, user: create(:user))
+      get "/reports/#{report.id}/view"
+      expect(document).to match_text 'you are not authorized to access'
     end
   end
 
   describe 'GET /reports/:id/export' do
-    let!(:report) { create(:report) }
+    let!(:report) { create(:report, user:) }
     let(:csv) { CSV.parse(response.body) }
 
     before { travel_to(Time.new(2022, 5, 28, 16, 13, 47)) }
@@ -136,10 +164,18 @@ RSpec.describe '/reports' do
     it 'generates filename' do
       expect(response.headers['content-disposition']).to include 'filename="my report 2022-05-28 15_13_47.csv";'
     end
+
+    context "other user's report" do
+      let!(:report) { create(:report, user: create(:user)) }
+
+      it 'rejects access' do
+        expect(document).to match_text 'you are not authorized to access'
+      end
+    end
   end
 
   describe 'GET /reports/:id/email' do
-    let!(:report) { create(:report) }
+    let!(:report) { create(:report, user:) }
     let(:mail) { ActionMailer::Base.deliveries.last }
 
     before { create(:example_report_data) }
@@ -157,6 +193,14 @@ RSpec.describe '/reports' do
 
     it 'displays confirmation flash message' do
       expect(document.div('.flash.notice')).to match_text 'Report delivered to to@example.com'
+    end
+
+    context "other user's report" do
+      let!(:report) { create(:report, user: create(:user)) }
+
+      it 'rejects access' do
+        expect(document).to match_text 'you are not authorized to access'
+      end
     end
   end
 end

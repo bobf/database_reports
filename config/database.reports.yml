@@ -10,8 +10,8 @@ development:
   username: postgres
   password: password
   database: development
-  <% if ENV.key?('DEVELOPMENT_REPORT_DATABASE_URL') %>
-  url: <%= ENV['DEVELOPMENT_REPORT_DATABASE_URL'] %>
+  <% if ENV.key?('DEVELOPMENT_REPORTS_DATABASE_URL') %>
+  url: <%= ENV['DEVELOPMENT_REPORTS_DATABASE_URL'] %>
   <% end %>
 
 test:
@@ -21,14 +21,14 @@ test:
   username: postgres
   password: password
   database: test
-  <% if ENV.key?('TEST_REPORT_DATABASE_URL') %>
-  url: <%= ENV['TEST_REPORT_DATABASE_URL'] %>
+  <% if ENV.key?('TEST_REPORTS_DATABASE_URL') %>
+  url: <%= ENV['TEST_REPORTS_DATABASE_URL'] %>
   <% end %>
 
 staging:
   <<: *default
-  url: <%= ENV['REPORT_DATABASE_URL'] %>
+  url: <%= ENV['REPORTS_DATABASE_URL'] %>
 
 production:
   <<: *default
-  url: <%= ENV['REPORT_DATABASE_URL'] %>
+  url: <%= ENV['REPORTS_DATABASE_URL'] %>

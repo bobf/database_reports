@@ -49,7 +49,14 @@
 
       <tr>
         <th class="px-4 py-3 text-left">Last Edited</th>
-        <td class="px-4 py-3"><%= @report.updated_at.strftime('%Y-%m-%d %H:%M') %> UTC</td>
+        <td class="px-4 py-3"><%= @report.updated_at.strftime('%Y-%m-%d %H:%M UTC') %></td>
+      </tr>
+
+      <tr>
+        <th class="px-4 py-3 text-left">Last Emailed</th>
+        <td class="px-4 py-3">
+          <%= @report.last_reported_at&.strftime('%Y-%m-%d %H:%M UTC') || 'Never' %>
+        </td>
       </tr>
     </tbody>
   </table>

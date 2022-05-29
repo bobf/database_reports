@@ -2,6 +2,8 @@
 
 # Configuration for a scheduled database query report.
 class Report < ApplicationRecord
+  belongs_to :user
+
   validates_presence_of :name
   validates_presence_of :subject
   validates_presence_of :query

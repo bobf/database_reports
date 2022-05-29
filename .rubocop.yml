@@ -3,6 +3,7 @@ AllCops:
   Exclude:
   - 'bin/**/*'
   - 'db/schema.rb'
+  - 'db/migrate/20220529161953_devise_create_users.rb'
 
 Style/Documentation:
   Exclude:

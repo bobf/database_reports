@@ -5,6 +5,7 @@ source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 gem 'bootsnap', '~> 1.11'
+gem 'devise', '~> 4.8'
 gem 'importmap-rails', '~> 1.1'
 gem 'jbuilder', '~> 2.11'
 gem 'mysql2', '~> 0.5.4'
@@ -24,6 +25,7 @@ group :development, :test do
   gem 'debug', '~> 1.5'
   gem 'devpack', '~> 0.4.0'
   gem 'factory_bot_rails', '~> 6.2'
+  gem 'faker', '~> 2.21'
   gem 'rspec-html', '~> 0.2.9'
   gem 'rspec-rails', '~> 5.1'
   gem 'rubocop', '~> 1.30'

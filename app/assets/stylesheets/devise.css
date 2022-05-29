@@ -1,0 +1,27 @@
+h2 {
+  font-size: 2rem;
+}
+
+input {
+  background-color: rgb(25 33 52/var(--tw-bg-opacity)) !important;
+}
+
+input[type=submit] {
+  padding: 0.5rem 1rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+input[type=submit]:hover {
+  background-color: rgb(35 43 62/var(--tw-bg-opacity)) !important;
+  cursor: pointer;
+}
+
+main a {
+  color: rgb(168 85 247/var(--tw-bg-opacity));
+  display: block;
+}
+
+.field {
+  margin-bottom: 1rem;
+}

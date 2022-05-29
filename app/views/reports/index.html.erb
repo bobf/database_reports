@@ -1,19 +1,40 @@
-<table class="reports table-auto">
-  <thead>
-    <tr>
-      <th class="px-4 py-2">Name</th>
-      <th class="px-4 py-2">Created</th>
-      <th class="px-4 py-2">Last Updated</th>
-    </tr>
-  </thead>
+<div class="container">
+  <div class="container">
+    <h1 class="font-medium leading-tight text-4xl mt-0 mb-2">Reports</h1>
+  </div>
 
-  <tbody>
-    <% @reports.each do |report| %>
-      <tr class="report">
-        <td class="px-4 py-2"><%= link_to report.name, report_path(report), class: 'text-purple-300' %></td>
-        <td class="px-4 py-2"><%= report.created_at.strftime('%Y-%m-%d %H:%M') %></td>
-        <td class="px-4 py-2"><%= report.updated_at.strftime('%Y-%m-%d %H:%M') %></td>
-      </tr>
+  <div class="container">
+    <% if @reports.blank? %>
+      <p>You have not created any reports yet. Click "New Report" to get started.</p>
+    <% else %>
+      <table class="reports table-auto">
+        <thead>
+          <tr>
+            <th class="px-4 py-2">Name</th>
+            <th class="px-4 py-2">Schedule</th>
+            <th class="px-4 py-2">Last Updated</th>
+            <th class="px-4 py-2">Last Emailed</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @reports.each do |report| %>
+            <tr class="report">
+              <td class="px-4 py-2"><%= link_to report.name, report_path(report), class: 'text-purple-500' %></td>
+              <td class="px-4 py-3">
+                <% if report.schedule_type == 'weekly' %>
+                  Every <span class="font-bold text-purple-700"><%= Date::DAYNAMES[report.schedule_day] %></span> at
+                <% elsif report.schedule_type == 'daily' %>
+                  <span class="font-bold text-purple-700">Daily</span> at
+                <% end %>
+                  <span class="font-bold text-purple-700"><%= report.schedule_time&.strftime('%H:%M') %></span>
+              </td>
+              <td class="px-4 py-2"><%= report.updated_at.strftime('%Y-%m-%d %H:%M') %></td>
+              <td class="px-4 py-2"><%= report.last_reported_at&.strftime('%Y-%m-%d %H:%M UTC') || 'Never' %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
     <% end %>
-  </tbody>
-</table>
+  </div>
+</div>

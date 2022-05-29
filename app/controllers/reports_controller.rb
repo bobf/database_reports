@@ -2,12 +2,15 @@
 
 # CRUD actions for database reports.
 class ReportsController < ApplicationController
+  before_action :authorize_report_owner, except: %i[new index create]
+  rescue_from ActiveRecord::RecordNotFound, with: :report_not_found
+
   def index
-    @reports = Report.all
+    @reports = current_user.reports
   end
 
   def create
-    @report = Report.new(report_params)
+    @report = Report.new(user: current_user, **report_params)
     if @report.save
       redirect_to report_path(@report)
     else
@@ -59,6 +62,10 @@ class ReportsController < ApplicationController
     render :view
   end
 
+  def report_not_found
+    render template: 'reports/not_found'
+  end
+
   private
 
   def report
@@ -75,5 +82,11 @@ class ReportsController < ApplicationController
 
   def database_errors
     DatabaseReports::EXPECTED_DATABASE_ERRORS
+  end
+
+  def authorize_report_owner
+    return if current_user.present? && report&.user == current_user
+
+    report_not_found
   end
 end

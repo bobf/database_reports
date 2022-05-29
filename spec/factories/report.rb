@@ -7,5 +7,6 @@ FactoryBot.define do
     query { 'select example_column as "example column" from example_table' }
     to_recipients { ['to@example.com'] }
     schedule_type { 'none' }
+    user
   end
 end

@@ -2,7 +2,7 @@
 version: '3.7'
 services:
   database:
-    image: library/postgres
+    image: library/postgres:14
     environment:
       POSTGRES_PASSWORD: password
       PGDATA: "/var/pgdata"
@@ -27,14 +27,6 @@ services:
     - 33251:5432
     volumes:
     - database-reports:/var/pgdata
-  redis:
-    image: library/redis:7.0
-    networks:
-      local:
-        aliases:
-        - redis
-    ports:
-    - 45061:6379
 volumes:
   database: {}
   database-reports: {}

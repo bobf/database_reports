@@ -70,7 +70,7 @@ services:
       - rake
       - reports:worker
   database:
-    image: library/postgres
+    image: library/postgres:14
     environment:
       POSTGRES_PASSWORD: password
       PGDATA: "/var/pgdata"

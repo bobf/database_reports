@@ -64,11 +64,11 @@ services:
       local:
         aliases:
         - worker-local
-      command:
-        - bundle
-        - exec
-        - rake
-        - reports:worker
+    command:
+      - bundle
+      - exec
+      - rake
+      - reports:worker
   database:
     image: library/postgres
     environment:

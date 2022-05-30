@@ -12,7 +12,7 @@
       <tbody>
         <% (max_rows.nil? ? @output.rows : @output.rows.first(max_rows)).each do |row| %>
           <tr>
-            <% row.each do |value| %>
+            <% (max_columns.nil? ? row : row.first(max_columns)).each do |value| %>
               <td class="font-mono text-xs border px-3 py-3"><%= value %></td>
             <% end %>
           </tr>

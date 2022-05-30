@@ -27,6 +27,8 @@ RSpec.configure do |config|
   config.include ActiveSupport::Testing::TimeHelpers
   config.include Devise::Test::IntegrationHelpers # Rails >= 5
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
+  # Prevent transaction from rolling back when reconnecting to database during report data fetching.
+  config.before { allow(ReportRecord.connection).to receive(:reconnect!) }
   config.use_transactional_fixtures = true
   config.infer_spec_type_from_file_location!
   config.filter_rails_from_backtrace!

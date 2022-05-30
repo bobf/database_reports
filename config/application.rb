@@ -13,5 +13,6 @@ module DatabaseReports
   # Database report generator and emailer.
   class Application < Rails::Application
     config.load_defaults 7.0
+    config.beginning_of_week = :sunday
   end
 end

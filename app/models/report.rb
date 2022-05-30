@@ -55,7 +55,7 @@ class Report < ApplicationRecord
   end
 
   def output
-    @output ||= ReportRecord.connection.select_all(query)
+    @output ||= ReportRecord.select_all(query)
   end
 
   def filename

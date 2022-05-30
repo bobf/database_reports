@@ -4,4 +4,9 @@
 class ReportRecord < ActiveRecord::Base
   self.abstract_class = true
   establish_connection(Rails.application.config_for('database.reports'))
+
+  def self.select_all(query)
+    connection.reconnect!
+    connection.select_all(query)
+  end
 end

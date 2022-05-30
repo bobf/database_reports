@@ -1,6 +1,4 @@
 FROM ruby:3.1.2
-ARG BUNDLE_BITBUCKET__ORG
-ARG BUNDLE_GITHUB__COM
 ARG GIT_COMMIT
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - \
  && apt-get update \

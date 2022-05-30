@@ -23,6 +23,8 @@ services:
       MAILER_SMTP_HOST:
       MAILER_SMTP_PORT:
       MAILER_SMTP_DOMAIN:
+      MAILER_MAX_ROWS:
+      MAILER_MAX_COLUMNS:
     ports:
     - "${PUBLISH_PORT:?PUBLISH_PORT must be provided}:8080"
     deploy:
@@ -57,6 +59,8 @@ services:
       MAILER_SMTP_HOST:
       MAILER_SMTP_PORT:
       MAILER_SMTP_DOMAIN:
+      MAILER_MAX_ROWS:
+      MAILER_MAX_COLUMNS:
     deploy:
       mode: replicated
       replicas: 1

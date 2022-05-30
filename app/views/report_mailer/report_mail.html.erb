@@ -1,1 +1,6 @@
-<%= render partial: 'shared/report', locals: { report_url: report_url(@report) } %>
+<%= render partial: 'shared/report',
+           locals: {
+             report_url: report_url(@report),
+             max_rows: ENV.fetch('MAILER_MAX_ROWS', '3').to_i,
+             max_columns: ENV.fetch('MAILER_MAX_COLUMNS', '5').to_i
+           } %>

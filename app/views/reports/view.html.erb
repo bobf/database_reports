@@ -1,5 +1,5 @@
 <% if @error.present? %>
   <%= render partial: 'shared/error', locals: { report_url: report_path(@report) } %>
 <% else %>
-  <%= render partial: 'shared/report', locals: { report_url: report_path(@report) } %>
+  <%= render partial: 'shared/report', locals: { report_url: report_path(@report), max_rows: nil, max_columns: nil } %>
 <% end %>

@@ -27,12 +27,13 @@
               <td class="px-4 py-3">
                 <% if report.schedule_type == 'weekly' %>
                   Every <span class="font-bold text-purple-700"><%= Date::DAYNAMES[report.schedule_day] %></span> at
+                  <span class="font-bold text-purple-700"><%= report.schedule_time&.strftime('%H:%M') %></span>
                 <% elsif report.schedule_type == 'daily' %>
                   <span class="font-bold text-purple-700">Daily</span> at
+                  <span class="font-bold text-purple-700"><%= report.schedule_time&.strftime('%H:%M') %></span>
                 <% else %>
                   -
                 <% end %>
-                  <span class="font-bold text-purple-700"><%= report.schedule_time&.strftime('%H:%M') %></span>
               </td>
               <td class="px-4 py-2"><%= report.updated_at.strftime('%Y-%m-%d %H:%M UTC') %></td>
               <td class="px-4 py-2"><%= report.last_reported_at&.strftime('%Y-%m-%d %H:%M UTC') || 'Never' %></td>

@@ -37,7 +37,10 @@ module DatabaseReports
 
     def deliver_error(report, error)
       log('worker.error', :warn, name: report.name, error: error.message)
+      return if report.failure_notified_since_success?
+
       ReportMailer.with(report:, error:).error_mail.deliver_now
+      report.update!(failure_last_notified_at: Time.now.utc)
     end
   end
 end

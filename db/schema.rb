@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_05_31_182036) do
+ActiveRecord::Schema[7.0].define(version: 2022_05_31_193014) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -30,7 +30,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_31_182036) do
     t.datetime "last_reported_at"
     t.uuid "user_id", null: false
     t.datetime "deleted_at"
+    t.datetime "failure_last_notified_at"
     t.index ["deleted_at"], name: "index_reports_on_deleted_at"
+    t.index ["failure_last_notified_at"], name: "index_reports_on_failure_last_notified_at"
     t.index ["last_reported_at"], name: "index_reports_on_last_reported_at"
     t.index ["schedule_day"], name: "index_reports_on_schedule_day"
     t.index ["schedule_time"], name: "index_reports_on_schedule_time"

@@ -40,6 +40,13 @@ class Report < ApplicationRecord
     true
   end
 
+  def failure_notified_since_success?
+    return false if failure_last_notified_at.blank?
+    return true if last_reported_at.blank?
+
+    failure_last_notified_at < last_reported_at
+  end
+
   def to_recipients=(val)
     super(translated_email_addresses(val))
   end

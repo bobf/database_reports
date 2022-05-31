@@ -1,7 +1,10 @@
 <div class="container">
-  <div class="container">
-    <h1 class="font-medium leading-tight text-4xl mt-0 mb-2"><%= @report.name %></h1>
-  </div>
+  <% if current_user.admin? %>
+    <h2 class="font-medium leading-tight text-2xl mt-0 mb-3">
+      Created by:
+      <span class="text-purple-500"><%= @report.user.email %></span>
+    </h2>
+  <% end %>
   <div class="container">
     <%= render partial: 'reports/form' %>
   </div>

@@ -6,7 +6,11 @@ class ReportsController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :report_not_found
 
   def index
-    @reports = current_user.reports
+    @reports = if current_user.admin?
+                 Report.all
+               else
+                 current_user.reports
+               end
   end
 
   def create
@@ -90,6 +94,7 @@ class ReportsController < ApplicationController
   end
 
   def authorize_report_owner
+    return if current_user&.admin?
     return if current_user.present? && report&.user == current_user
 
     report_not_found

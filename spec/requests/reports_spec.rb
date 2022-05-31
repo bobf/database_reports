@@ -72,6 +72,22 @@ RSpec.describe '/reports' do
       get '/reports'
       expect(document.table('.reports')).to_not match_text 'my report'
     end
+
+    context 'admin user' do
+      let(:user) { create(:user, admin: true) }
+
+      it "shows all users' reports" do
+        create_list(:report, 4)
+        get '/reports'
+        expect(document.table('.reports').tr('.report').size).to eql 4
+      end
+
+      it "displays report owner's username" do
+        create(:report, user: create(:user, email: 'other-user@example.com'))
+        get '/reports'
+        expect(document.table('.reports').tr('.report')).to match_text 'other-user@example.com'
+      end
+    end
   end
 
   describe 'GET /reports/:id' do
@@ -79,6 +95,16 @@ RSpec.describe '/reports' do
       report = create(:report, user:)
       get "/reports/#{report.id}"
       expect(document.div('.report')).to match_text 'my report'
+    end
+
+    context 'admin user' do
+      let(:user) { create(:user, admin: true) }
+
+      it "shows all users' reports" do
+        report = create(:report)
+        get "/reports/#{report.id}"
+        expect(document.div('.report')).to match_text 'my report'
+      end
     end
   end
 
@@ -101,6 +127,16 @@ RSpec.describe '/reports' do
       get "/reports/#{report.id}/edit"
       expect(document).to match_text 'you are not authorized to access'
     end
+
+    context 'admin user' do
+      let(:user) { create(:user, admin: true) }
+
+      it 'shows a form for editing a report' do
+        report = create(:report)
+        get "/reports/#{report.id}/edit"
+        expect(document.form('.report').input(name: 'report[name]', value: 'my report')).to exist
+      end
+    end
   end
 
   describe 'PATCH /reports/:id' do
@@ -120,6 +156,16 @@ RSpec.describe '/reports' do
       report = create(:report, user: create(:user))
       patch "/reports/#{report.id}", params: { report: { name: 'my edited report' } }
       expect(document).to match_text 'you are not authorized to access'
+    end
+
+    context 'admin user' do
+      let(:user) { create(:user, admin: true) }
+
+      it 'updates an existing report' do
+        report = create(:report)
+        patch "/reports/#{report.id}", params: { report: { name: 'my edited report' } }
+        expect(report.reload.name).to eql 'my edited report'
+      end
     end
   end
 
@@ -142,6 +188,16 @@ RSpec.describe '/reports' do
       report = create(:report, user: create(:user))
       get "/reports/#{report.id}/view"
       expect(document).to match_text 'you are not authorized to access'
+    end
+
+    context 'admin user' do
+      let(:user) { create(:user, admin: true) }
+
+      it 'shows report output values' do
+        report = create(:report)
+        get "/reports/#{report.id}/view"
+        expect(document.table('.report-view')).to match_text 'example value'
+      end
     end
   end
 
@@ -170,6 +226,15 @@ RSpec.describe '/reports' do
 
       it 'rejects access' do
         expect(document).to match_text 'you are not authorized to access'
+      end
+    end
+
+    context 'admin user' do
+      let(:user) { create(:user, admin: true) }
+      let!(:report) { create(:report) }
+
+      it 'shows report output values' do
+        expect(csv.last.first).to eql 'example value'
       end
     end
   end
@@ -202,6 +267,16 @@ RSpec.describe '/reports' do
         expect(document).to match_text 'you are not authorized to access'
       end
     end
+
+    context 'admin user' do
+      let(:user) { create(:user, admin: true) }
+      let!(:report) { create(:report) }
+
+      it 'shows report output values' do
+        parse_html(mail.html_part.decoded)
+        expect(document.table('.report-view').td).to match_text 'example value'
+      end
+    end
   end
 
   describe 'DELETE /reports/:id' do
@@ -217,6 +292,17 @@ RSpec.describe '/reports' do
       delete "/reports/#{report.id}"
 
       expect(response).to redirect_to '/reports'
+    end
+
+    context 'admin user' do
+      let(:user) { create(:user, admin: true) }
+      let!(:report) { create(:report) }
+
+      it 'deletes report' do
+        delete "/reports/#{report.id}"
+
+        expect(report.reload).to be_deleted
+      end
     end
   end
 end

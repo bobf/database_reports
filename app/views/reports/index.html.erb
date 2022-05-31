@@ -14,6 +14,9 @@
             <th class="px-4 py-2">Schedule</th>
             <th class="px-4 py-2">Last Updated</th>
             <th class="px-4 py-2">Last Emailed</th>
+            <% if current_user.admin? %>
+              <th class="px-4 py-2">Created By</th>
+            <% end %>
           </tr>
         </thead>
 
@@ -26,11 +29,16 @@
                   Every <span class="font-bold text-purple-700"><%= Date::DAYNAMES[report.schedule_day] %></span> at
                 <% elsif report.schedule_type == 'daily' %>
                   <span class="font-bold text-purple-700">Daily</span> at
+                <% else %>
+                  -
                 <% end %>
                   <span class="font-bold text-purple-700"><%= report.schedule_time&.strftime('%H:%M') %></span>
               </td>
-              <td class="px-4 py-2"><%= report.updated_at.strftime('%Y-%m-%d %H:%M') %></td>
+              <td class="px-4 py-2"><%= report.updated_at.strftime('%Y-%m-%d %H:%M UTC') %></td>
               <td class="px-4 py-2"><%= report.last_reported_at&.strftime('%Y-%m-%d %H:%M UTC') || 'Never' %></td>
+              <% if current_user.admin? %>
+                <td class="font-bold text-purple-700"><%= report.user.email %></td>
+              <% end %>
             </tr>
           <% end %>
         </tbody>

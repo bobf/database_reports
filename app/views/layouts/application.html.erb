@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>DatabaseReports</title>
+    <title>DatabaseReports - <%= @report&.name.present? ? @report.name : action_name.humanize %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>

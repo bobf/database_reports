@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_05_29_171541) do
+ActiveRecord::Schema[7.0].define(version: 2022_05_31_182036) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -29,6 +29,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_29_171541) do
     t.string "schedule_type"
     t.datetime "last_reported_at"
     t.uuid "user_id", null: false
+    t.datetime "deleted_at"
+    t.index ["deleted_at"], name: "index_reports_on_deleted_at"
     t.index ["last_reported_at"], name: "index_reports_on_last_reported_at"
     t.index ["schedule_day"], name: "index_reports_on_schedule_day"
     t.index ["schedule_time"], name: "index_reports_on_schedule_time"
@@ -52,6 +54,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_29_171541) do
     t.datetime "locked_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
+    t.index ["deleted_at"], name: "index_users_on_deleted_at"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true

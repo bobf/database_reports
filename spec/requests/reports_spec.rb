@@ -203,4 +203,20 @@ RSpec.describe '/reports' do
       end
     end
   end
+
+  describe 'DELETE /reports/:id' do
+    let!(:report) { create(:report, user:) }
+
+    it 'deletes report' do
+      delete "/reports/#{report.id}"
+
+      expect(report.reload).to be_deleted
+    end
+
+    it 'redirects to index' do
+      delete "/reports/#{report.id}"
+
+      expect(response).to redirect_to '/reports'
+    end
+  end
 end

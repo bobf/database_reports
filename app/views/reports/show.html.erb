@@ -62,6 +62,7 @@
   </table>
   <div class="container px-2 py-3">
     <%= link_to 'Configure Report', edit_report_path(@report), class: 'bg-yellow-600 hover:bg-blue-700 mr-2 text-white font-bold py-2 px-4 rounded' %>
+    <%= link_to 'Delete Report', report_path(@report), data: { turbo: true, 'turbo_method': :delete, turbo_confirm: 'Are you sure?' }, class: 'bg-red-600 hover:bg-blue-700 mr-2 text-white font-bold py-2 px-4 rounded' %>
     <%= link_to 'View Results', view_report_path(@report), class: 'bg-green-600 hover:bg-blue-700 mr-2 text-white font-bold py-2 px-4 rounded' %>
     <%= link_to 'Export CSV', export_report_path(@report), class: 'bg-purple-600 hover:bg-blue-700 mr-2 text-white font-bold py-2 px-4 rounded' %>
     <% if @report.to_recipients.present? %>

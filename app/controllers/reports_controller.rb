@@ -38,6 +38,11 @@ class ReportsController < ApplicationController
     end
   end
 
+  def destroy
+    report.destroy
+    redirect_to reports_path, notice: 'Report was deleted.', status: :see_other
+  end
+
   def view
     @report = report
     @output = report.output

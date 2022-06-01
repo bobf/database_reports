@@ -26,6 +26,13 @@ module.exports = {
       }),
     },
   },
+  safelist: [
+    'bg-blue-600',
+    'bg-red-600',
+    'bg-yellow-600',
+    'bg-green-600',
+    'bg-purple-600',
+  ],
   plugins: [
     require('@tailwindcss/forms'),
     require('@tailwindcss/aspect-ratio'),

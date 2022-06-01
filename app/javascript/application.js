@@ -4,6 +4,7 @@ import "controllers";
 import { Turbo } from "@hotwired/turbo-rails";
 
 Turbo.session.drive = true;
+console.log(Turbo.session);
 
 window.addEventListener('turbo:load', () => {
   document.querySelectorAll('input.schedule-type').forEach((item) => {

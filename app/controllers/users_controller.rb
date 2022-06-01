@@ -16,7 +16,6 @@ class UsersController < ApplicationController
   def update
     @user = user
     @user.update!(user_params)
-
     render :show
   end
 
@@ -25,9 +24,13 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.create!(user_params)
-
-    render :show
+    @user = User.new(**user_params)
+    if @user.save
+      flash[:notice] = 'User created. &check;'
+      render :show
+    else
+      render :new
+    end
   end
 
   def destroy
@@ -35,7 +38,6 @@ class UsersController < ApplicationController
     @user.destroy
     @users = User.all
     flash[:notice] = "Deleted #{@user.email}"
-
     render :index
   end
 
@@ -49,6 +51,8 @@ class UsersController < ApplicationController
 
   def user
     User.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    nil
   end
 
   def user_params

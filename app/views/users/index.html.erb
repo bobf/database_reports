@@ -1,19 +1,21 @@
 <%= turbo_frame_tag :users do %>
-  <%= link_to 'Create New User', new_user_path %>
+  <%= turbo_flash_messages %>
+  <%= h1('Users') %>
+  <%= button 'Create New User', new_user_path, color: 'blue', classes: %w[my-3] %>
 
-  <table class="users table">
+  <table class="users table-auto">
     <thead>
       <tr>
-        <th>Username</th>
-        <th>Created At</th>
+        <th class="px-4 py-2">Username</th>
+        <th class="px-4 py-2">Created At</th>
       </tr>
     </thead>
 
     <tbody>
       <% @users.each do |user| %>
         <tr class="user">
-          <td><%= link_to user.email, user_path(user) %></td>
-          <td><%= user.created_at.strftime('%Y-%m-%d %H:%M:%S UTC') %></td>
+          <td class="px-4 py-2"><%= link user.email, user_path(user) %></td>
+          <td class="px-4 py-2"><%= user.created_at.strftime('%Y-%m-%d %H:%M:%S UTC') %></td>
         </tr>
       <% end %>
     </tbody>

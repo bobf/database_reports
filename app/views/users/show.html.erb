@@ -1,25 +1,36 @@
 <%= turbo_frame_tag :users do %>
-  <table class="user">
-    <tbody>
-      <tr>
-        <th>Username</th>
-        <td><%= @user.email %></td>
-      </tr>
+  <%= turbo_flash_messages %>
+  <% if @user.blank? %>
+    <%= h1('User has been deleted.') %>
+  <% else %>
+    <%= h1('User Details') %>
+    <table class="user table-auto">
+      <tbody>
+        <tr>
+          <th class="px-4 py-2">Username</th>
+          <td class="px-4 py-2"><%= @user.email %></td>
+        </tr>
 
-      <tr>
-        <th>Created At</th>
-        <td><%= @user.created_at.strftime('%Y-%m-%d %H:%M:%S UTC') %></td>
-      </tr>
+        <tr>
+          <th class="px-4 py-2">Created At</th>
+          <td class="px-4 py-2"><%= @user.created_at.strftime('%Y-%m-%d %H:%M:%S UTC') %></td>
+        </tr>
 
-      <tr>
-        <th>Admin</th>
-        <td><%= @user.admin? ? 'Yes' : 'No' %></td>
-      </tr>
-    </tbody>
-  </table>
+        <tr>
+          <th class="px-4 py-2">Admin</th>
+          <td class="px-4 py-2"><%= @user.admin? ? 'Yes' : 'No' %></td>
+        </tr>
 
-  <div class="container px-2 py-3">
-    <%= link_to 'Edit User', edit_user_path(@user), class: 'bg-yellow-600 hover:bg-blue-700 mr-2 text-white font-bold py-2 px-4 rounded' %>
-    <%= link_to 'Delete User', user_path(@user), data: { 'turbo_method': :delete, turbo_confirm: 'Are you sure?' }, class: 'bg-red-600 hover:bg-blue-700 mr-2 text-white font-bold py-2 px-4 rounded' %>
-  </div>
+        <tr>
+          <th class="px-4 py-2">Reports Created</th>
+          <td class="px-4 py-2"><%= @user.reports.count.to_i %></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="container px-2 py-3">
+      <%= button 'Edit User', edit_user_path(@user), color: 'yellow' %>
+      <%= button 'Delete User', user_path(@user), color: 'red', confirm: 'Are you sure?', method: :delete %>
+    </div>
+  <% end %>
 <% end %>

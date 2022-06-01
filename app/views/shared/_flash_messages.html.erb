@@ -1,0 +1,9 @@
+<% if notice.present? %>
+  <div class="flash notice max-w-7xl top-2 mt-2 right-2 absolute px-3 py-3 bg-blue-800 rounded-md animate-fade-out"><%= notice.html_safe %></div>
+<% end %>
+
+<% if alert.present? %>
+  <div class="flash alert max-w-7xl top-2 mt-2 right-2 absolute px-3 py-3 bg-red-500 rounded-md animate-fade-out"><%= alert.html_safe %></div>
+<% end %>
+
+<% flash.clear %>

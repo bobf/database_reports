@@ -1,11 +1,30 @@
 <%= turbo_frame_tag :users do %>
-  <%= form_with model: @user, class: 'user' do |form| %>
-    <%= form.label :email %>
-    <%= form.text_field :email %>
+  <%= h1("#{submit_text} User") %>
+  <%= form_with model: @user, class: 'user w-full max-w-lg' do |form| %>
+    <div class="flex flex-wrap -mx-3 mb-6">
+      <div class="w-full md:w-1/8 px-3 mb-6 md:mb-0">
+        <%= form.label :email, class: label_class %>
+        <%= form.text_field :email, class: input_class %>
+        <p class="<%= info_class %>">User's email address.</p>
+        <% if @user.errors[:email].present? %>
+          <p class="<%= error_class %>">Email <%= @user.errors[:email].join(', ') %></p>
+        <% end %>
+      </div>
+    </div>
 
-    <%= form.label :admin %>
-    <%= form.check_box :admin %>
+    <div class="flex flex-wrap -mx-3 mb-1">
+      <div class="w-full md:w-1/8 px-3 mb-6 md:mb-0">
+        <%= form.label :admin, class: label_class %>
+        <%= form.check_box :admin, class: "#{input_defaults} p-3 mb-1 focus:bg-purple-800 checked:bg-purple-500 mr-1" %>
+        <p class="<%= info_class %>">Admin users have full access to other users' reports and can create/edit/delete users.</p>
+      </div>
+    </div>
 
-    <%= form.submit value: 'Update' %>
+    <div class="md:flex md:items-center mt-5">
+      <div class="md:w-1/3"></div>
+      <div class="md:w-2/3">
+        <%= form.submit class: submit_class, value: submit_text, data: { turbo_action: 'advance' } %>
+      </div>
+    </div>
   <% end %>
 <% end %>

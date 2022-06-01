@@ -1,6 +1,6 @@
 <div class="container">
   <div class="container">
-    <h1 class="font-medium leading-tight text-4xl mt-0 mb-2">Reports</h1>
+    <%= h1('Reports') %>
   </div>
 
   <div class="container">
@@ -38,7 +38,11 @@
               <td class="px-4 py-2"><%= report.updated_at.strftime('%Y-%m-%d %H:%M UTC') %></td>
               <td class="px-4 py-2"><%= report.last_reported_at&.strftime('%Y-%m-%d %H:%M UTC') || 'Never' %></td>
               <% if current_user.admin? %>
-                <td class="font-bold text-purple-700"><%= report.user.email %></td>
+                <% if report.user.present? %>
+                  <td class="font-bold text-purple-700"><%= report.user.email %></td>
+                <% else %>
+                  <td>[User deleted]</td>
+                <% end %>
               <% end %>
             </tr>
           <% end %>

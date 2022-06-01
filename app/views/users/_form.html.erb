@@ -1,0 +1,11 @@
+<%= turbo_frame_tag :users do %>
+  <%= form_with model: @user, class: 'user' do |form| %>
+    <%= form.label :email %>
+    <%= form.text_field :email %>
+
+    <%= form.label :admin %>
+    <%= form.check_box :admin %>
+
+    <%= form.submit value: 'Update' %>
+  <% end %>
+<% end %>

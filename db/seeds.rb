@@ -1,3 +1,12 @@
 # frozen_string_literal: true
 
-User.create!(email: 'user@example.com', password: 'password123', password_confirmation: 'password123')
+User.find_or_create_by!(email: 'user@example.com') do |user|
+  user.password = 'password123'
+  user.password_confirmation = 'password123'
+end
+
+User.find_or_create_by!(email: 'admin@example.com') do |user|
+  user.password = 'password123'
+  user.password_confirmation = 'password123'
+  user.admin = true
+end

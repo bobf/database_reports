@@ -14,6 +14,9 @@
         <%= link_to 'New Report', new_report_path, class: 'block mt-4 lg:inline-block lg:mt-0 text-purple-200 hover:text-white mr-4' %>
         <%= link_to 'List Reports', reports_path, class: 'block mt-4 lg:inline-block lg:mt-0 text-purple-200 hover:text-white mr-4' %>
         <%= link_to 'Account Settings', edit_user_registration_path, class: 'block mt-4 lg:inline-block lg:mt-0 text-purple-200 hover:text-white mr-4' %>
+        <% if current_user.admin? %>
+          <%= link_to 'Users', users_path, class: 'block mt-4 lg:inline-block lg:mt-0 text-purple-200 hover:text-white mr-4' %>
+        <% end %>
         <%= link_to 'Sign Out', destroy_user_session_path, class: 'block mt-4 lg:inline-block lg:mt-0 text-purple-200 hover:text-white mr-4' %>
       <% end %>
     </div>

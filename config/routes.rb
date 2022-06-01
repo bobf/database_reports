@@ -17,4 +17,6 @@ Rails.application.routes.draw do
       get 'email'
     end
   end
+
+  resources :users
 end

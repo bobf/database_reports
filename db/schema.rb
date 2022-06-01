@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_05_31_201652) do
+ActiveRecord::Schema[7.0].define(version: 2022_06_01_075217) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -59,7 +59,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_31_201652) do
     t.datetime "deleted_at"
     t.boolean "admin"
     t.index ["deleted_at"], name: "index_users_on_deleted_at"
-    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["email", "deleted_at"], name: "index_users_on_email_and_deleted_at", unique: true
+    t.index ["email"], name: "index_users_on_email"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end

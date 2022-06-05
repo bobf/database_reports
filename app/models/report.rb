@@ -40,6 +40,10 @@ class Report < ApplicationRecord
     true
   end
 
+  def user_display
+    user.presence&.email || '[User deleted]'
+  end
+
   def failure_notified_since_success?
     return false if failure_last_notified_at.blank?
     return true if last_reported_at.blank?

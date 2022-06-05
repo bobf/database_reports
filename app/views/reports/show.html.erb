@@ -1,81 +1,83 @@
-<div class="report container">
-  <h1 class="font-medium leading-tight text-4xl mt-0 mb-2">
-    Report Name:
-    <span class="text-purple-500"><%= @report.name %></span>
-  </h1>
-  <% if current_user.admin? %>
-    <h2 class="font-medium leading-tight text-3xl mt-0 mb-2">
-      Created by:
-      <span class="text-purple-500"><%= @report.user.email %></span>
-    </h2>
-  <% end %>
-  <table class="table-auto">
-    <tbody>
-      <tr>
-        <th class="px-4 py-3 text-left">Email Subject</th>
-        <td class="px-4 py-3"><%= @report.subject %></td>
-      </tr>
-
-      <% if @report.to_recipients.present? %>
+<%= turbo_frame_tag :reports do %>
+  <div class="report container">
+    <h1 class="font-medium leading-tight text-4xl mt-0 mb-2">
+      Report Name:
+      <span class="text-purple-500"><%= @report.name %></span>
+    </h1>
+    <% if current_user.admin? %>
+      <h2 class="font-medium leading-tight text-3xl mt-0 mb-2">
+        Created by:
+        <span class="text-purple-500"><%= @report.user_display %></span>
+      </h2>
+    <% end %>
+    <table class="table-auto">
+      <tbody>
         <tr>
-          <th class="px-4 py-3 text-left">Recipients (To:)</th>
-          <td class="px-4 py-3"><%= @report.to_recipients.join(', ') %></td>
+          <th class="px-4 py-3 text-left">Email Subject</th>
+          <td class="px-4 py-3"><%= @report.subject %></td>
         </tr>
-      <% end %>
 
-      <% if @report.cc_recipients.present? %>
+        <% if @report.to_recipients.present? %>
+          <tr>
+            <th class="px-4 py-3 text-left">Recipients (To:)</th>
+            <td class="px-4 py-3"><%= @report.to_recipients.join(', ') %></td>
+          </tr>
+        <% end %>
+
+        <% if @report.cc_recipients.present? %>
+          <tr>
+            <th class="px-4 py-3 text-left">Recipients (Cc:)</th>
+            <td class="px-4 py-3"><%= @report.cc_recipients.join(', ') %></td>
+          </tr>
+        <% end %>
+
+        <% if @report.bcc_recipients.present? %>
+          <tr>
+            <th class="px-4 py-3 text-left">Recipients (Bcc:)</th>
+            <td class="px-4 py-3"><%= @report.bcc_recipients.join(', ') %></td>
+          </tr>
+        <% end %>
+
+        <% if %w[daily weekly].include?(@report.schedule_type) %>
+          <tr>
+            <th class="px-4 py-3 text-left">Schedule</th>
+            <td class="px-4 py-3">
+              <% if @report.schedule_type == 'weekly' %>
+                Every <span class="font-bold text-purple-500"><%= Date::DAYNAMES[@report.schedule_day] %></span> at
+              <% elsif @report.schedule_type == 'daily' %>
+                <span class="font-bold text-purple-500">Daily</span> at
+              <% end %>
+                <span class="font-bold text-purple-500"><%= @report.schedule_time&.strftime('%H:%M') %></span>
+            </td>
+          </tr>
+        <% end %>
+
         <tr>
-          <th class="px-4 py-3 text-left">Recipients (Cc:)</th>
-          <td class="px-4 py-3"><%= @report.cc_recipients.join(', ') %></td>
+          <th class="px-4 py-3 text-left">Query</th>
+          <td class="px-4 py-3 font-mono"><%= @report.query %></td>
         </tr>
-      <% end %>
 
-      <% if @report.bcc_recipients.present? %>
         <tr>
-          <th class="px-4 py-3 text-left">Recipients (Bcc:)</th>
-          <td class="px-4 py-3"><%= @report.bcc_recipients.join(', ') %></td>
+          <th class="px-4 py-3 text-left">Last Edited</th>
+          <td class="px-4 py-3"><%= @report.updated_at.strftime('%Y-%m-%d %H:%M UTC') %></td>
         </tr>
-      <% end %>
 
-      <% if %w[daily weekly].include?(@report.schedule_type) %>
         <tr>
-          <th class="px-4 py-3 text-left">Schedule</th>
+          <th class="px-4 py-3 text-left">Last Emailed</th>
           <td class="px-4 py-3">
-            <% if @report.schedule_type == 'weekly' %>
-              Every <span class="font-bold text-purple-500"><%= Date::DAYNAMES[@report.schedule_day] %></span> at
-            <% elsif @report.schedule_type == 'daily' %>
-              <span class="font-bold text-purple-500">Daily</span> at
-            <% end %>
-              <span class="font-bold text-purple-500"><%= @report.schedule_time&.strftime('%H:%M') %></span>
+            <%= @report.last_reported_at&.strftime('%Y-%m-%d %H:%M UTC') || 'Never' %>
           </td>
         </tr>
+      </tbody>
+    </table>
+    <div class="container px-2 py-3">
+      <%= button 'Configure Report', edit_report_path(@report), color: 'yellow' %>
+      <%= button 'View Results', view_report_path(@report), color: 'green' %>
+      <%= button 'Export CSV', export_report_path(@report), color: 'purple' %>
+      <% if @report.to_recipients.present? %>
+        <%= button 'Email Now', email_report_path(@report), color: 'blue' %>
       <% end %>
-
-      <tr>
-        <th class="px-4 py-3 text-left">Query</th>
-        <td class="px-4 py-3 font-mono"><%= @report.query %></td>
-      </tr>
-
-      <tr>
-        <th class="px-4 py-3 text-left">Last Edited</th>
-        <td class="px-4 py-3"><%= @report.updated_at.strftime('%Y-%m-%d %H:%M UTC') %></td>
-      </tr>
-
-      <tr>
-        <th class="px-4 py-3 text-left">Last Emailed</th>
-        <td class="px-4 py-3">
-          <%= @report.last_reported_at&.strftime('%Y-%m-%d %H:%M UTC') || 'Never' %>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <div class="container px-2 py-3">
-    <%= link_to 'Configure Report', edit_report_path(@report), class: button_class(color: 'yellow') %>
-    <%= link_to 'View Results', view_report_path(@report), class: button_class(color: 'green') %>
-    <%= link_to 'Export CSV', export_report_path(@report), class: button_class(color: 'purple') %>
-    <% if @report.to_recipients.present? %>
-      <%= link_to 'Email Now', email_report_path(@report), class: button_class(color: 'blue') %>
-    <% end %>
-    <%= link_to 'Delete Report', report_path(@report), data: { turbo: true, 'turbo_method': :delete, turbo_confirm: 'Are you sure?' }, class: button_class(color: 'red') %>
+      <%= button 'Delete Report', report_path(@report), method: :delete, confirm: 'Are you sure?', color: 'red' %>
+    </div>
   </div>
-</div>
+<% end %>

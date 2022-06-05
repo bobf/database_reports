@@ -1,12 +1,13 @@
-<div class="container">
-  <% if current_user.admin? %>
-    <h2 class="font-medium leading-tight text-2xl mt-0 mb-3">
-      Created by:
-      <span class="text-purple-500"><%= @report.user.email %></span>
-    </h2>
-  <% end %>
+<%= turbo_frame_tag :reports do %>
   <div class="container">
-    <%= render partial: 'reports/form' %>
+    <% if current_user.admin? %>
+      <h2 class="font-medium leading-tight text-2xl mt-0 mb-3">
+        Created by:
+        <span class="text-purple-500"><%= @report.user_display %></span>
+      </h2>
+    <% end %>
+    <div class="container">
+      <%= render partial: 'reports/form' %>
+    </div>
   </div>
-</div>
-
+<% end %>

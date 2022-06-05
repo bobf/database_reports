@@ -1,0 +1,40 @@
+<% if format == :list %>
+  <tr class="user">
+    <td class="px-4 py-2"><%= link user.email, user_path(user) %></td>
+    <td class="px-4 py-2"><%= user.created_at.strftime('%Y-%m-%d %H:%M:%S UTC') %></td>
+  </tr>
+<% else %>
+  <% if @user.blank? %>
+    <%= h1('User has been deleted.') %>
+  <% else %>
+    <%= h1('User Details') %>
+    <table class="user table-auto">
+      <tbody>
+        <tr>
+          <th class="px-4 py-2">Username</th>
+          <td class="px-4 py-2"><%= @user.email %></td>
+        </tr>
+
+        <tr>
+          <th class="px-4 py-2">Created At</th>
+          <td class="px-4 py-2"><%= @user.created_at.strftime('%Y-%m-%d %H:%M:%S UTC') %></td>
+        </tr>
+
+        <tr>
+          <th class="px-4 py-2">Admin</th>
+          <td class="px-4 py-2"><%= @user.admin? ? 'Yes' : 'No' %></td>
+        </tr>
+
+        <tr>
+          <th class="px-4 py-2">Reports Created</th>
+          <td class="px-4 py-2"><%= @user.reports.count.to_i %></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="container px-2 py-3">
+      <%= button 'Edit User', edit_user_path(@user), color: 'yellow' %>
+      <%= button 'Delete User', user_path(@user), color: 'red', confirm: 'Are you sure?', method: :delete %>
+    </div>
+  <% end %>
+<% end %>

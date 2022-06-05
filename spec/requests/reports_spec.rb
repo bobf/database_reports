@@ -19,18 +19,6 @@ RSpec.describe '/reports' do
       expect(document.table('.reports')).to match_text 'my new report'
     end
 
-    it 'redirects to show page' do
-      post '/reports', params: {
-        report: {
-          name: 'my new report',
-          subject: 'my subject',
-          query: 'query',
-          schedule_type: 'none'
-        }
-      }
-      expect(response).to redirect_to "/reports/#{Report.first.id}"
-    end
-
     it 'converts email address strings to an array' do
       post '/reports', params: {
         report: {
@@ -146,10 +134,10 @@ RSpec.describe '/reports' do
       expect(report.reload.name).to eql 'my edited report'
     end
 
-    it 'redirects to show page' do
+    it 'renders show page' do
       report = create(:report, user:)
       patch "/reports/#{report.id}", params: { report: { name: 'my edited report' } }
-      expect(response).to redirect_to "/reports/#{report.id}"
+      expect(document).to match_text 'Report Name: my edited report'
     end
 
     it "rejects access to other user's reports" do
@@ -288,10 +276,10 @@ RSpec.describe '/reports' do
       expect(report.reload).to be_deleted
     end
 
-    it 'redirects to index' do
+    it 'renders index' do
       delete "/reports/#{report.id}"
 
-      expect(response).to redirect_to '/reports'
+      expect(document.h1).to match_text 'Reports'
     end
 
     context 'admin user' do

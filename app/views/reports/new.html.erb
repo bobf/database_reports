@@ -1,8 +1,10 @@
-<div class="container">
+<%= turbo_frame_tag :reports do %>
   <div class="container">
-    <%= h1('New Report') %>
+    <div class="container">
+      <%= h1('New Report') %>
+    </div>
+    <div class="container">
+      <%= render partial: 'reports/form' %>
+    </div>
   </div>
-  <div class="container">
-    <%= render partial: 'reports/form' %>
-  </div>
-</div>
+<% end %>

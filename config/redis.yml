@@ -1,0 +1,5 @@
+development:
+  url: <%= ENV.fetch('REDIS_URL', 'redis://127.0.0.1:41149') %>
+
+test:
+  url: <%= ENV.fetch('REDIS_URL', 'redis://127.0.0.1:42845') %>

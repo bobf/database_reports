@@ -1,5 +1,7 @@
-<% if @error.present? %>
-  <%= render partial: 'shared/error', locals: { report_url: report_path(@report) } %>
-<% else %>
-  <%= render partial: 'shared/report', locals: { report_url: report_path(@report), max_rows: nil, max_columns: nil } %>
+<%= turbo_frame_tag :reports do %>
+  <% if @error.present? %>
+    <%= render partial: 'shared/error', locals: { report_url: report_path(@report) } %>
+  <% else %>
+    <%= render partial: 'shared/report', locals: { report_url: report_path(@report), max_rows: nil, max_columns: nil } %>
+  <% end %>
 <% end %>

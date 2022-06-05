@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# CRUD actions for user accounts.
 class UsersController < ApplicationController
   before_action :authorize_admin
 

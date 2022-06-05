@@ -12,12 +12,7 @@
     </thead>
 
     <tbody>
-      <% @users.each do |user| %>
-        <tr class="user">
-          <td class="px-4 py-2"><%= link user.email, user_path(user) %></td>
-          <td class="px-4 py-2"><%= user.created_at.strftime('%Y-%m-%d %H:%M:%S UTC') %></td>
-        </tr>
-      <% end %>
+      <%= render partial: 'users/user', collection: @users, locals: { format: :list } %>
     </tbody>
   </table>
 <% end %>

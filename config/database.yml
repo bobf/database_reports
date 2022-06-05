@@ -4,7 +4,7 @@ default: &default
 development:
   <<: *default
   host: 127.0.0.1
-  port: 60601
+  port: 51053
   username: postgres
   password: password
   database: development
@@ -15,7 +15,7 @@ development:
 test:
   <<: *default
   host: 127.0.0.1
-  port: 33249
+  port: 55421
   username: postgres
   password: password
   database: test

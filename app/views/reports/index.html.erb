@@ -1,53 +1,31 @@
-<div class="container">
+<%= turbo_frame_tag :reports do %>
   <div class="container">
-    <%= h1('Reports') %>
-  </div>
+    <div class="container">
+      <%= h1('Reports') %>
+    </div>
 
-  <div class="container">
-    <% if @reports.blank? %>
-      <p>You have not created any reports yet. Click "New Report" to get started.</p>
-    <% else %>
-      <table class="reports table-auto">
-        <thead>
-          <tr>
-            <th class="px-4 py-2">Name</th>
-            <th class="px-4 py-2">Schedule</th>
-            <th class="px-4 py-2">Last Updated</th>
-            <th class="px-4 py-2">Last Emailed</th>
-            <% if current_user.admin? %>
-              <th class="px-4 py-2">Created By</th>
-            <% end %>
-          </tr>
-        </thead>
-
-        <tbody>
-          <% @reports.each do |report| %>
-            <tr class="report">
-              <td class="px-4 py-2"><%= link_to report.name, report_path(report), class: 'text-purple-500' %></td>
-              <td class="px-4 py-3">
-                <% if report.schedule_type == 'weekly' %>
-                  Every <span class="font-bold text-purple-700"><%= Date::DAYNAMES[report.schedule_day] %></span> at
-                  <span class="font-bold text-purple-700"><%= report.schedule_time&.strftime('%H:%M') %></span>
-                <% elsif report.schedule_type == 'daily' %>
-                  <span class="font-bold text-purple-700">Daily</span> at
-                  <span class="font-bold text-purple-700"><%= report.schedule_time&.strftime('%H:%M') %></span>
-                <% else %>
-                  -
-                <% end %>
-              </td>
-              <td class="px-4 py-2"><%= report.updated_at.strftime('%Y-%m-%d %H:%M UTC') %></td>
-              <td class="px-4 py-2"><%= report.last_reported_at&.strftime('%Y-%m-%d %H:%M UTC') || 'Never' %></td>
+    <div class="container">
+      <% if current_reports.blank? %>
+        <p>You have not created any reports yet. Click "New Report" to get started.</p>
+      <% else %>
+        <table class="reports table-auto">
+          <thead>
+            <tr>
+              <th class="px-4 py-2">Name</th>
+              <th class="px-4 py-2">Schedule</th>
+              <th class="px-4 py-2">Last Updated</th>
+              <th class="px-4 py-2">Last Emailed</th>
               <% if current_user.admin? %>
-                <% if report.user.present? %>
-                  <td class="font-bold text-purple-700"><%= report.user.email %></td>
-                <% else %>
-                  <td>[User deleted]</td>
-                <% end %>
+                <th class="px-4 py-2">Created By</th>
               <% end %>
             </tr>
-          <% end %>
-        </tbody>
-      </table>
-    <% end %>
+          </thead>
+
+          <tbody>
+            <%= render partial: 'reports/report', collection: current_reports, locals: { format: :list } %>
+          </tbody>
+        </table>
+      <% end %>
+    </div>
   </div>
-</div>
+<% end %>

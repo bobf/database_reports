@@ -2,7 +2,7 @@
 version: '3.7'
 services:
   database:
-    image: library/postgres:14
+    image: library/postgres
     environment:
       POSTGRES_PASSWORD: password
       PGDATA: "/var/pgdata"
@@ -11,7 +11,7 @@ services:
         aliases:
         - database
     ports:
-    - "${sidecar-33249:}5432"
+    - "${sidecar-55421:}5432"
   database-reports:
     image: library/postgres
     environment:
@@ -23,6 +23,14 @@ services:
         - database-reports
     ports:
     - "${sidecar-33250:}5432"
+  redis:
+    image: library/redis:7.0
+    networks:
+      local:
+        aliases:
+        - redis
+    ports:
+    - "${sidecar-42845:}6379"
 volumes: {}
 networks:
   local:

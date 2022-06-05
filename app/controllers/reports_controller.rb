@@ -4,19 +4,14 @@
 class ReportsController < ApplicationController
   before_action :authorize_report_owner, except: %i[new index create]
   rescue_from ActiveRecord::RecordNotFound, with: :report_not_found
+  helper_method :current_reports
 
-  def index
-    @reports = if current_user.admin?
-                 Report.all
-               else
-                 current_user.reports
-               end
-  end
+  def index; end
 
   def create
     @report = Report.new(user: current_user, **report_params)
     if @report.save
-      redirect_to report_path(@report)
+      render :show
     else
       render :new
     end
@@ -35,8 +30,9 @@ class ReportsController < ApplicationController
   end
 
   def update
-    if report.update(report_params)
-      redirect_to report_path(report)
+    @report = report
+    if @report.update(report_params)
+      render :show
     else
       render :edit
     end
@@ -44,7 +40,8 @@ class ReportsController < ApplicationController
 
   def destroy
     report.destroy
-    redirect_to reports_path, notice: 'Report was deleted.', status: :see_other
+    flash[:notice] = 'Report deleted.'
+    render :index
   end
 
   def view
@@ -79,6 +76,14 @@ class ReportsController < ApplicationController
 
   def report
     @report ||= Report.find(params[:id])
+  end
+
+  def current_reports
+    @current_reports ||= if current_user.admin?
+                           Report.all
+                         else
+                           current_user.reports
+                         end.order(created_at: :desc)
   end
 
   def report_params

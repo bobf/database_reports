@@ -30,10 +30,10 @@ module ApplicationHelper
   end
 
   # rubocop:disable Metrics/ParameterLists
-  def button(title, path, color: 'blue', classes: [], confirm: nil, method: nil)
+  def button(title, path, color: 'blue', classes: [], confirm: nil, method: nil, turbo: true)
     classes_with_defaults = [button_class(color:)] + classes
     link_to title, path, class: classes_with_defaults.join(' '),
-                         data: { turbo_action: 'advance', turbo_method: method, turbo_confirm: confirm }
+                         data: { turbo:, turbo_action: 'advance', turbo_method: method, turbo_confirm: confirm }
   end
   # rubocop:enable Metrics/ParameterLists
 

@@ -73,7 +73,7 @@
     <div class="container px-2 py-3">
       <%= button 'Configure Report', edit_report_path(@report), color: 'yellow' %>
       <%= button 'View Results', view_report_path(@report), color: 'green' %>
-      <%= button 'Export CSV', export_report_path(@report), color: 'purple' %>
+      <%= button 'Export CSV', export_report_path(@report), color: 'purple', turbo: false %>
       <% if @report.to_recipients.present? %>
         <%= button 'Email Now', email_report_path(@report), color: 'blue' %>
       <% end %>

@@ -15,7 +15,7 @@ RUN bundle config set deployment 'true' \
  && bundle config set without 'development test' \
  && bundle install
 ADD .build/context.tar .
-RUN NODE_ENV=production RAILS_ENV=production SECRET_KEY_BASE=placeholder-secret bundle exec rake assets:precompile
+RUN REDIS_URL=redis://example.com NODE_ENV=production RAILS_ENV=production SECRET_KEY_BASE=placeholder-secret bundle exec rake assets:precompile
 RUN echo "${GIT_COMMIT}" > /app/GIT_COMMIT
 HEALTHCHECK --interval=30s \
             --timeout=30s \

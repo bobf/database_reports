@@ -49,7 +49,7 @@ module ApplicationHelper
   end
 
   def label_class
-    'block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2'
+    'block uppercase tracking-wide text-gray-300 text-xs font-bold mb-2'
   end
 
   def input_defaults
@@ -75,7 +75,7 @@ module ApplicationHelper
   # rubocop:enable Metrics/MethodLength
 
   def info_class
-    'text-gray-600 text-xs italic'
+    'text-gray-400 text-xs italic'
   end
 
   def error_class

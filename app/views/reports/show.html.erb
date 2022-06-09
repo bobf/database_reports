@@ -75,7 +75,7 @@
       <%= button 'View Results', view_report_path(@report), color: 'green' %>
       <%= button 'Export CSV', export_report_path(@report), color: 'purple', turbo: false %>
       <% if @report.to_recipients.present? %>
-        <%= button 'Email Now', email_report_path(@report), color: 'blue' %>
+        <%= button 'Email Now', email_report_path(@report), turbo: false, color: 'blue' %>
       <% end %>
       <%= button 'Delete Report', report_path(@report), method: :delete, confirm: 'Are you sure?', color: 'red' %>
     </div>

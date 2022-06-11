@@ -10,10 +10,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_06_01_075217) do
+ActiveRecord::Schema[7.0].define(version: 2022_06_11_115618) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
+
+  create_table "databases", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "adapter"
+    t.string "database"
+    t.string "username"
+    t.string "password"
+    t.string "host"
+    t.integer "port"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.uuid "user_id", null: false
+    t.index ["name"], name: "index_databases_on_name"
+    t.index ["user_id"], name: "index_databases_on_user_id"
+  end
 
   create_table "reports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
@@ -31,6 +47,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_01_075217) do
     t.uuid "user_id", null: false
     t.datetime "deleted_at"
     t.datetime "failure_last_notified_at"
+    t.uuid "database_id", null: false
+    t.index ["database_id"], name: "index_reports_on_database_id"
     t.index ["deleted_at"], name: "index_reports_on_deleted_at"
     t.index ["failure_last_notified_at"], name: "index_reports_on_failure_last_notified_at"
     t.index ["last_reported_at"], name: "index_reports_on_last_reported_at"
@@ -65,5 +83,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_01_075217) do
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
+  add_foreign_key "databases", "users"
+  add_foreign_key "reports", "databases"
   add_foreign_key "reports", "users"
 end

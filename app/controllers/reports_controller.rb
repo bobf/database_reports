@@ -90,7 +90,7 @@ class ReportsController < ApplicationController
     params.require(:report)
           .permit(
             :name, :query, :to_recipients, :cc_recipients, :bcc_recipients, :subject,
-            :schedule_day, :schedule_time, :schedule_type
+            :schedule_day, :schedule_time, :schedule_type, :database_id
           )
   end
 

@@ -5,6 +5,7 @@ class Report < ApplicationRecord
   acts_as_paranoid
 
   belongs_to :user
+  belongs_to :database
 
   validates_presence_of :name
   validates_presence_of :subject

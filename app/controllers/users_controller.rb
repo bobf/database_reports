@@ -46,12 +46,6 @@ class UsersController < ApplicationController
 
   private
 
-  def authorize_admin
-    return if current_user&.admin?
-
-    render template: 'shared/not_authorized'
-  end
-
   def user
     User.find(params[:id])
   rescue ActiveRecord::RecordNotFound

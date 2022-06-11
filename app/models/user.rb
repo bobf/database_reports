@@ -7,6 +7,7 @@ class User < ApplicationRecord
   before_validation :initialize_password, only: :create
 
   has_many :reports
+  has_many :databases
 
   def admin?
     admin

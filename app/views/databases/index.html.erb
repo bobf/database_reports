@@ -1,0 +1,21 @@
+<%= turbo_frame_tag :databases do %>
+  <table class="databases">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Host</th>
+        <th>Database</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @databases.each do |database| %>
+        <tr>
+          <td><%= database.name %></td>
+          <td><%= database.host %>:<%= database.port %></td>
+          <td><%= database.database %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

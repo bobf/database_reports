@@ -8,5 +8,6 @@ FactoryBot.define do
     to_recipients { ['to@example.com'] }
     schedule_type { 'none' }
     user
+    database
   end
 end

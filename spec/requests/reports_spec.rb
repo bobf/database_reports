@@ -2,6 +2,7 @@
 
 RSpec.describe '/reports' do
   let(:user) { create(:user) }
+  let!(:database) { create(:database) }
 
   before { sign_in user }
 
@@ -12,7 +13,8 @@ RSpec.describe '/reports' do
           name: 'my new report',
           subject: 'my subject',
           query: 'query',
-          schedule_type: 'none'
+          schedule_type: 'none',
+          database_id: database.id
         }
       }
       get '/reports'
@@ -26,7 +28,8 @@ RSpec.describe '/reports' do
           subject: 'my subject',
           query: 'query',
           schedule_type: 'none',
-          to_recipients: 'user1@example.com, user2@example.com'
+          to_recipients: 'user1@example.com, user2@example.com',
+          database_id: database.id
         }
       }
       expect(Report.first.to_recipients).to eql %w[user1@example.com user2@example.com]
@@ -40,7 +43,8 @@ RSpec.describe '/reports' do
           query: 'query',
           schedule_type: 'daily',
           schedule_time: '14:30',
-          to_recipients: 'user1@example.com, user2@example.com'
+          to_recipients: 'user1@example.com, user2@example.com',
+          database_id: database.id
         }
       }
       report = Report.first.schedule_time

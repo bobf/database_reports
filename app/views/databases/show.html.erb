@@ -1,0 +1,20 @@
+<%= turbo_frame_tag :databases do %>
+  <table class="database">
+    <tbody>
+      <th>Name</th>
+      <td><%= @database.name %></td>
+
+      <th>Adapter</th>
+      <td><%= @database.adapter %></td>
+
+      <th>Host</th>
+      <td><%= @database.host %>:<%= @database.port %></td>
+
+      <th>Database</th>
+      <td><%= @database.database %></td>
+
+      <th>Description</th>
+      <td><%= @database.description %></td>
+    </tbody>
+  </table>
+<% end %>

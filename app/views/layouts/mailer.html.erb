@@ -14,10 +14,83 @@
       td.border, th.border {
         border: 1px solid #555; padding: 0.5rem;
       }
+
+      .wrapper {
+        background-color: #0F172A;
+        padding: 1rem;
+        padding-bottom: 4rem;
+      }
+
+      .content {
+        margin: 1rem;
+        background-color: #ffffff;
+        font-family: Arial, sans-serif;
+      }
+
+      .error-content {
+        padding: 0.5rem;
+      }
+
+      .title-wrapper {
+        vertical-align: middle;
+      }
+
+      .logo {
+        vertical-align: text-bottom;
+      }
+
+      .title {
+        color: #fff;
+        font-size: 1.5rem;
+        font-family: Arial, sans-serif;
+      }
+
+      .header {
+        background-color: #A855F7;
+        padding: 1rem;
+      }
+
+      .summary {
+        padding: 0;
+        background-color: #0F172A;
+        color: #CBD5DC;
+        font-family: Arial;
+        margin: 0;
+        padding-bottom: 1rem;
+      }
+
+      .summary a:visited {
+        color: #796ff3;
+      }
+
+      .summary a {
+        color: #796ff3;
+        text-decoration: none;
+        font-size: 1.5rem;
+      }
+
     </style>
   </head>
 
   <body>
-    <%= yield %>
+    <div class="header">
+
+      <div class="title-wrapper">
+
+        <svg class="logo" height="1.5rem" viewBox="0 0 1792 1792" width="1.5rem" xmlns="http://www.w3.org/2000/svg"><path fill="#553355" d="M896 768q237 0 443-43t325-127v170q0 69-103 128t-280 93.5-385 34.5-385-34.5-280-93.5-103-128v-170q119 84 325 127t443 43zm0 768q237 0 443-43t325-127v170q0 69-103 128t-280 93.5-385 34.5-385-34.5-280-93.5-103-128v-170q119 84 325 127t443 43zm0-384q237 0 443-43t325-127v170q0 69-103 128t-280 93.5-385 34.5-385-34.5-280-93.5-103-128v-170q119 84 325 127t443 43zm0-1152q208 0 385 34.5t280 93.5 103 128v128q0 69-103 128t-280 93.5-385 34.5-385-34.5-280-93.5-103-128v-128q0-69 103-128t280-93.5 385-34.5z"/></svg>
+
+        <span class="title">Database Reports</span>
+
+      </div>
+
+    </div>
+
+    <div class="wrapper">
+
+      <div class="content">
+        <%= yield %>
+      </div>
+
+    </div>
   </body>
 </html>

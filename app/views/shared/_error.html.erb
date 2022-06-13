@@ -1,8 +1,10 @@
 <div class="error container">
   <%= render partial: 'shared/summary', locals: { report_url:, max_columns: nil, max_rows: nil } %>
 
-  <%= h1('Error executing query') %>
+  <div class="error-content">
+    <%= h1('Error executing query') %>
 
-  <p class="text-gray-500 font-mono py-3"><%= @report.query %></p>
-  <p class="text-red-500 font-mono py-3"><%= @error %></p>
+    <p class="text-gray-500 font-mono py-3"><%= @report.query %></p>
+    <p class="text-red-500 font-mono py-3"><%= @error %></p>
+  </div>
 </div>

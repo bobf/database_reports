@@ -1,17 +1,27 @@
-<%= turbo_frame_tag :reports do %>
+<%= turbo_frame_tag :main do %>
+  <%= turbo_flash_messages %>
   <div class="report container">
     <h1 class="font-medium leading-tight text-4xl mt-0 mb-2">
       Report Name:
       <span class="text-purple-500"><%= @report.name %></span>
     </h1>
     <% if current_user.admin? %>
-      <h2 class="font-medium leading-tight text-3xl mt-0 mb-2">
+      <h2 class="font-medium leading-tight text-2xl mt-0 mb-2">
         Created by:
-        <span class="text-purple-500"><%= @report.user_display %></span>
+        <%= link @report.user_display, user_path(@report.user) %></span>
       </h2>
     <% end %>
     <table class="table-auto">
       <tbody>
+        <tr>
+          <th class="px-4 py-3 text-left">Database</th>
+          <% if current_user.admin? && @report.database.present? %>
+            <td class="px-4 py-3"><%= link @report.database.name, database_path(@report.database) %></td>
+          <% else %>
+            <td class="px-4 py-3"><%= @report.database&.name %></td>
+          <% end %>
+        </tr>
+
         <tr>
           <th class="px-4 py-3 text-left">Email Subject</th>
           <td class="px-4 py-3"><%= @report.subject %></td>
@@ -59,7 +69,12 @@
 
         <tr>
           <th class="px-4 py-3 text-left">Last Edited</th>
-          <td class="px-4 py-3"><%= @report.updated_at.strftime('%Y-%m-%d %H:%M UTC') %></td>
+          <td class="px-4 py-3">
+            <%= @report.last_edited_at&.strftime('%Y-%m-%d %H:%M UTC') %>
+            <% if current_user.admin? && @report.last_edited_by.present? %>
+              (<%= link @report.last_edited_by.email, user_path(@report.last_edited_by) %>)
+            <% end %>
+          </td>
         </tr>
 
         <tr>

@@ -1,4 +1,5 @@
-<%= turbo_frame_tag :databases do %>
+<%= turbo_frame_tag :main do %>
+  <%= turbo_flash_messages %>
   <div class="container">
     <div class="container">
       <%= render partial: 'databases/form' %>

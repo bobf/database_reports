@@ -161,7 +161,7 @@ RSpec.describe '/databases' do
 
       it 'displays database form' do
         get "/databases/#{database.id}/edit"
-        expect(document.form('.database').input(name: 'database')[:value]).to eql 'my_database'
+        expect(document.form('.database').input(name: 'database[database]')[:value]).to eql 'my_database'
       end
     end
 
@@ -175,6 +175,33 @@ RSpec.describe '/databases' do
 
       it 'provides an authorization error message' do
         get "/databases/#{database.id}/edit"
+        expect(document).to match_text 'You are not authorized to access this page.'
+      end
+    end
+  end
+
+  describe 'DELETE /databases/:id' do
+    let!(:database) { create(:database, name: 'my database') }
+
+    context 'admin user' do
+      let(:user) { create(:user, admin: true) }
+
+      it 'deletes database configuration' do
+        delete "/databases/#{database.id}"
+        expect { database.reload }.to raise_error ActiveRecord::RecordNotFound
+      end
+    end
+
+    context 'non-admin user' do
+      let(:user) { create(:user) }
+
+      it 'does not delete database configuration' do
+        delete "/databases/#{database.id}"
+        expect(database.reload).to be_present
+      end
+
+      it 'deletes database configuration' do
+        delete "/databases/#{database.id}"
         expect(document).to match_text 'You are not authorized to access this page.'
       end
     end

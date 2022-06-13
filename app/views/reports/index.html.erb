@@ -1,17 +1,20 @@
-<%= turbo_frame_tag :reports do %>
+<%= turbo_frame_tag :main do %>
+  <%= turbo_flash_messages %>
   <div class="container">
     <div class="container">
       <%= h1('Reports') %>
+      <%= button 'Create New Report', new_report_path, color: 'blue', classes: %w[my-3] %>
     </div>
 
     <div class="container">
       <% if current_reports.blank? %>
-        <p>You have not created any reports yet. Click "New Report" to get started.</p>
+        <p>You have not created any reports yet. Click "Create New Report" to get started.</p>
       <% else %>
         <table class="reports table-auto">
           <thead>
             <tr>
               <th class="px-4 py-2">Name</th>
+              <th class="px-4 py-2">Database</th>
               <th class="px-4 py-2">Schedule</th>
               <th class="px-4 py-2">Last Updated</th>
               <th class="px-4 py-2">Last Emailed</th>

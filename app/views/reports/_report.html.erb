@@ -3,6 +3,13 @@
     <tr class="report">
       <td class="px-4 py-2"><%= link report.name, report_path(report) %></td>
       <td class="px-4 py-3">
+        <% if current_user.admin? && report.database.present? %>
+          <%= link report.database.name, database_path(report.database) %>
+        <% else %>
+          <%= report.database&.name || '[Database not configured]' %>
+        <% end %>
+      </td>
+      <td class="px-4 py-3">
         <% if report.schedule_type == 'weekly' %>
           Every <span class="font-bold text-purple-700"><%= Date::DAYNAMES[report.schedule_day] %></span> at
           <span class="font-bold text-purple-700"><%= report.schedule_time&.strftime('%H:%M') %></span>

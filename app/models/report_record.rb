@@ -3,9 +3,9 @@
 # Base class used for executing report queries on target database.
 class ReportRecord < ActiveRecord::Base
   self.abstract_class = true
-  establish_connection(Rails.application.config_for('database.reports'))
 
-  def self.select_all(query)
+  def self.select_all(database, query)
+    establish_connection(database.to_h)
     connection.reconnect!
     connection.select_all(query)
   end

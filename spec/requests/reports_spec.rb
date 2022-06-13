@@ -162,8 +162,6 @@ RSpec.describe '/reports' do
   end
 
   describe 'GET /reports/:id/view' do
-    before { create(:example_report_data) }
-
     it 'shows report output columns' do
       report = create(:report, user:)
       get "/reports/#{report.id}/view"
@@ -198,7 +196,6 @@ RSpec.describe '/reports' do
     let(:csv) { CSV.parse(response.body) }
 
     before { travel_to(Time.new(2022, 5, 28, 16, 13, 47)) }
-    before { create(:example_report_data) }
     before { get "/reports/#{report.id}/export" }
 
     it 'shows report output columns' do
@@ -235,7 +232,6 @@ RSpec.describe '/reports' do
     let!(:report) { create(:report, user:) }
     let(:mail) { ActionMailer::Base.deliveries.last }
 
-    before { create(:example_report_data) }
     before { get "/reports/#{report.id}/email" }
 
     it 'emails report' do

@@ -1,92 +1,84 @@
-<%= form_with model: @database, class: 'report w-full max-w-lg' do |form| %>
+<%= form_with model: @database, class: 'database w-full max-w-lg' do |form| %>
+
   <div class="flex flex-wrap -mx-3 mb-6">
     <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-      <%= form.label 'Report Name *', class: label_class %>
+      <%= form.label 'Name *', class: label_class %>
       <%= form.text_field :name, class: input_class %>
-      <p class="<%= info_class %>">Choose a name for the report.</p>
-      <% if @report.errors[:name].present? %>
-        <p class="<%= error_class %>">Name <%= @report.errors[:name].join(', ') %></p>
+      <p class="<%= info_class %>">Choose a descriptive name for the database configuration.</p>
+      <% if @database.errors[:name].present? %>
+        <p class="<%= error_class %>">Name <%= @database.errors[:name].join(', ') %></p>
       <% end %>
     </div>
 
     <div class="w-full md:w-1/2 px-3">
-      <%= form.label 'Email Subject *', class: label_class %>
-      <%= form.text_field :subject, class: input_class %>
-      <p class="<%= info_class %>">Email subject for report mailings.</p>
-      <% if @report.errors[:subject].present? %>
-        <p class="<%= error_class %>">Subject <%= @report.errors[:subject].join(', ') %></p>
+      <%= form.label 'Description', class: label_class %>
+      <%= form.text_field :description, class: input_class %>
+      <p class="<%= info_class %>">Optional information to describe this database connection.</p>
+      <% if @database.errors[:description].present? %>
+        <p class="<%= error_class %>">Description <%= @database.errors[:description].join(', ') %></p>
       <% end %>
     </div>
   </div>
 
   <div class="flex flex-wrap -mx-3 mb-6">
     <div class="w-full px-3">
-      <%= form.label 'Database Query (SQL) *', class: label_class %>
-      <%= form.text_area :query, class: "#{input_class} h-20 font-mono bg-gray-800 focus:bg-gray-800 text-gray-400 focus:text-gray-300" %>
-      <p class="<%= info_class %>">Database query used to generate report.</p>
-      <% if @report.errors[:query].present? %>
-        <p class="<%= error_class %>">Query <%= @report.errors[:query].join(', ') %></p>
+      <%= form.label 'Adapter *', class: label_class %>
+      <%= form.select :adapter, database_adapter_options, {}, class: input_class %>
+      <p class="<%= info_class %>">Database connection adapter to use for connection.</p>
+      <% if @database.errors[:adapter].present? %>
+        <p class="<%= error_class %>">Adapter <%= @database.errors[:adapter].join(', ') %></p>
       <% end %>
     </div>
   </div>
 
-  <%= form.label 'Schedule', class: label_class %>
-  <div class="flex flex-wrap -mx-3 mb-1">
-    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-      <%= form.radio_button :schedule_type, :daily, class: "schedule-type #{input_defaults} focus:bg-purple-800 checked:bg-purple-500 float-left mr-1" %>
-      <%= form.label 'Daily', class: "#{label_class} float-left" %>
-      <%= form.radio_button :schedule_type, :weekly, class: "schedule-type #{input_defaults} focus:bg-purple-800 checked:bg-purple-500 float-left ml-3 mr-1" %>
-      <%= form.label 'Weekly', class: "#{label_class} float-left" %>
-      <%= form.radio_button :schedule_type,
-                            :none,
-                            checked: @report.schedule_type == 'none' || @report.schedule_type.blank?,
-                            class: "schedule-type #{input_defaults} focus:bg-purple-800 checked:bg-purple-500 float-left ml-3 mr-1" %>
-      <%= form.label 'None', class: "#{label_class} float-left" %>
+  <div class="flex flex-wrap -mx-3 mb-6">
+    <div class="w-full px-3">
+      <%= form.label 'Database Schema *', class: label_class %>
+      <%= form.text_field :database, class: input_class %>
+      <p class="<%= info_class %>">Database schema to connect to.</p>
+      <% if @database.errors[:database].present? %>
+        <p class="<%= error_class %>">Database <%= @database.errors[:database].join(', ') %></p>
+      <% end %>
     </div>
   </div>
 
   <div class="flex flex-wrap -mx-3 mb-6">
     <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-      <%= form.label 'Time', class: label_class %>
-      <%= form.text_field :schedule_time,
-                          placeholder: '14:30',
-                          value: @report.schedule_time&.strftime('%H:%M'),
-                          class: "schedule-time #{input_class} disabled:bg-gray:900 disabled:border-gray-800",
-                          disabled: !%w[daily weekly].include?(@report.schedule_type) %>
-      <p class="<%= info_class %>">Time of day to generate report: HH:MM</p>
-      <% if @report.errors[:schedule_time].present? %>
-        <p class="<%= error_class %>">Schedule time <%= @report.errors[:schedule_time].join(', ') %></p>
+      <%= form.label 'Database Username *', class: label_class %>
+      <%= form.text_field :username, class: input_class %>
+      <p class="<%= info_class %>">Username to use for database authentication.</p>
+      <% if @database.errors[:username].present? %>
+        <p class="<%= error_class %>">Username <%= @database.errors[:username].join(', ') %></p>
       <% end %>
     </div>
 
+    <div class="w-full md:w-1/2 px-3">
+      <%= form.label 'Database Password *', class: label_class %>
+      <%= form.password_field :password, class: input_class %>
+      <p class="<%= info_class %>">Password to use for database authentication.</p>
+      <% if @database.errors[:password].present? %>
+        <p class="<%= error_class %>">Password <%= @database.errors[:password].join(', ') %></p>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="flex flex-wrap -mx-3 mb-6">
     <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-      <%= form.label 'Weekday', class: label_class %>
-      <%= form.select :schedule_day, Date::DAYNAMES.each.with_index.to_a, {}, { class: "schedule-day #{input_class} disabled:bg-gray:900 disabled:border-gray-800", disabled: @report.schedule_type != 'weekly' } %>
-      <p class="<%= info_class %>">Day of week to generate report.</p>
+      <%= form.label 'Database Hostname *', class: label_class %>
+      <%= form.text_field :host, class: input_class %>
+      <p class="<%= info_class %>">Hostname to use for database connection.</p>
+      <% if @database.errors[:host].present? %>
+        <p class="<%= error_class %>">Hostname <%= @database.errors[:host].join(', ') %></p>
+      <% end %>
     </div>
-  </div>
 
-  <div class="flex flex-wrap -mx-3 mb-6">
-    <div class="w-full px-3">
-      <%= form.label '"To" recipients', class: label_class %>
-      <%= form.text_field :to_recipients, class: input_class %>
-      <p class="<%= info_class %>">Comma-separated email addresses for report "To:" recipients.</p>
-    </div>
-  </div>
-
-  <div class="flex flex-wrap -mx-3 mb-6">
-    <div class="w-full px-3">
-      <%= form.label '"Cc" recipients', class: label_class %>
-      <%= form.text_field :cc_recipients, class: input_class %>
-      <p class="<%= info_class %>">Comma-separated email addresses for report "Cc:" recipients.</p>
-    </div>
-  </div>
-
-  <div class="flex flex-wrap -mx-3 mb-6">
-    <div class="w-full px-3">
-      <%= form.label '"Bcc" recipients', class: label_class %>
-      <%= form.text_field :bcc_recipients, class: input_class %>
-      <p class="<%= info_class %>">Comma-separated email addresses for report "Bcc:" recipients.</p>
+    <div class="w-full md:w-1/2 px-3">
+      <%= form.label 'Database Port *', class: label_class %>
+      <%= form.number_field :port, in: 1..65535, class: input_class %>
+      <p class="<%= info_class %>">Port to use for database connection.</p>
+      <% if @database.errors[:port].present? %>
+        <p class="<%= error_class %>">Port <%= @database.errors[:port].join(', ') %></p>
+      <% end %>
     </div>
   </div>
 

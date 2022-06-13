@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_06_11_115618) do
+ActiveRecord::Schema[7.0].define(version: 2022_06_13_184525) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -48,6 +48,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_11_115618) do
     t.datetime "deleted_at"
     t.datetime "failure_last_notified_at"
     t.uuid "database_id", null: false
+    t.datetime "last_edited_at"
+    t.uuid "last_edited_by_user_id"
     t.index ["database_id"], name: "index_reports_on_database_id"
     t.index ["deleted_at"], name: "index_reports_on_deleted_at"
     t.index ["failure_last_notified_at"], name: "index_reports_on_failure_last_notified_at"
@@ -84,6 +86,5 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_11_115618) do
   end
 
   add_foreign_key "databases", "users"
-  add_foreign_key "reports", "databases"
   add_foreign_key "reports", "users"
 end

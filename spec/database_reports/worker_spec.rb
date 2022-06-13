@@ -9,7 +9,6 @@ RSpec.describe DatabaseReports::Worker do
 
     it 'dispatches weekly scheduled jobs' do
       create(:report, schedule_type: 'weekly', schedule_day: now.wday, schedule_time: now)
-      create(:example_report_data)
       subject.work(once: true)
       parse_html(mail.html_part.decoded)
       expect(document.table('.report-view').td).to match_text 'example value'
@@ -17,7 +16,6 @@ RSpec.describe DatabaseReports::Worker do
 
     it 'dispatches daily scheduled jobs' do
       create(:report, schedule_type: 'daily', schedule_time: now)
-      create(:example_report_data)
       subject.work(once: true)
       parse_html(mail.html_part.decoded)
       expect(document.table('.report-view').td).to match_text 'example value'
@@ -25,14 +23,12 @@ RSpec.describe DatabaseReports::Worker do
 
     it 'does not dispatch not-due weekly scheduled jobs' do
       create(:report, schedule_type: 'weekly', schedule_day: now.wday + 1, schedule_time: now)
-      create(:example_report_data)
       subject.work(once: true)
       expect(mail).to be_blank
     end
 
     it 'does not dispatch not-due daily scheduled jobs' do
       create(:report, schedule_type: 'daily', schedule_time: now + 1.hour)
-      create(:example_report_data)
       subject.work(once: true)
       expect(mail).to be_blank
     end

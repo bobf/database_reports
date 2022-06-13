@@ -31,7 +31,7 @@ class ReportsController < ApplicationController
 
   def update
     @report = report
-    if @report.update(report_params)
+    if @report.update(report_params.merge(last_edited_by: current_user, last_edited_at: Time.now.utc))
       render :show
     else
       render :edit

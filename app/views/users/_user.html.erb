@@ -11,22 +11,22 @@
     <table class="user table-auto">
       <tbody>
         <tr>
-          <th class="px-4 py-2">Username</th>
+          <th class="px-4 py-2 text-left">Username</th>
           <td class="px-4 py-2"><%= @user.email %></td>
         </tr>
 
         <tr>
-          <th class="px-4 py-2">Created At</th>
+          <th class="px-4 py-2 text-left">Created At</th>
           <td class="px-4 py-2"><%= @user.created_at.strftime('%Y-%m-%d %H:%M:%S UTC') %></td>
         </tr>
 
         <tr>
-          <th class="px-4 py-2">Admin</th>
+          <th class="px-4 py-2 text-left">Admin</th>
           <td class="px-4 py-2"><%= @user.admin? ? 'Yes' : 'No' %></td>
         </tr>
 
         <tr>
-          <th class="px-4 py-2">Reports Created</th>
+          <th class="px-4 py-2 text-left">Reports Created</th>
           <td class="px-4 py-2"><%= @user.reports.count.to_i %></td>
         </tr>
       </tbody>

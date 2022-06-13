@@ -1,8 +1,7 @@
-GIT
-  remote: https://github.com/bobf/rspec-html.git
-  revision: 1402a1bf5b9033f74bc2f2cd373c6447725468a3
+PATH
+  remote: ../rspec-html
   specs:
-    rspec-html (0.2.12)
+    rspec-html (0.2.13)
       nokogiri (~> 1.10)
       rspec (~> 3.0)
 

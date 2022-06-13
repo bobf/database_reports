@@ -27,7 +27,7 @@ group :development, :test do
   gem 'devpack', '~> 0.4.0'
   gem 'factory_bot_rails', '~> 6.2'
   gem 'faker', '~> 2.21'
-  gem 'rspec-html', github: 'bobf/rspec-html'
+  gem 'rspec-html', path: '../rspec-html'
   gem 'rspec-rails', '~> 5.1'
   gem 'rubocop', '~> 1.30'
   gem 'rubocop-rails', '~> 2.14'

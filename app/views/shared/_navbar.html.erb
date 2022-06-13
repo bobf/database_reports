@@ -1,7 +1,9 @@
 <nav class="flex items-center justify-between flex-wrap bg-purple-500 p-6">
   <div class="flex items-center flex-shrink-0 text-white mr-6">
-    <img src="/database.svg" class="w-8 mr-4" />
-    <span class="font-semibold text-xl tracking-tight">Database Reports</span>
+      <img src="/database.svg" class="w-8 mr-4" />
+    <%= link_to root_path do %>
+      <span class="font-semibold text-xl tracking-tight">Database Reports</span>
+    <% end %>
   </div>
   <div class="block lg:hidden">
     <button class="flex items-center px-3 py-2 border rounded text-purple-200 border-purple-400 hover:text-white hover:border-white">
@@ -11,13 +13,16 @@
   <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
     <div class="text-sm lg:flex-grow">
       <% if current_user.present? %>
-        <%= link_to 'New Report', new_report_path, class: 'block mt-4 lg:inline-block lg:mt-0 text-purple-200 hover:text-white mr-4' %>
-        <%= link_to 'Reports List', reports_path, class: 'block mt-4 lg:inline-block lg:mt-0 text-purple-200 hover:text-white mr-4' %>
-        <%= link_to 'Account Settings', edit_user_registration_path, class: 'block mt-4 lg:inline-block lg:mt-0 text-purple-200 hover:text-white mr-4' %>
+        <%= link 'Reports', reports_path, class: 'block mt-4 lg:inline-block lg:mt-0 text-purple-200 hover:text-white mr-4' %>
+
         <% if current_user.admin? %>
-          <%= link_to 'Users', users_path, class: 'block mt-4 lg:inline-block lg:mt-0 text-purple-200 hover:text-white mr-4' %>
+          <%= link 'Users', users_path, class: 'block mt-4 lg:inline-block lg:mt-0 text-purple-200 hover:text-white mr-4' %>
+
+          <%= link 'Databases', databases_path, class: 'block mt-4 lg:inline-block lg:mt-0 text-purple-200 hover:text-white mr-4' %>
         <% end %>
-        <%= link_to 'Sign Out', destroy_user_session_path, class: 'block mt-4 lg:inline-block lg:mt-0 text-purple-200 hover:text-white mr-4' %>
+
+        <%= link 'Sign Out', destroy_user_session_path, class: 'block mt-4 lg:inline-block lg:mt-0 text-purple-200 hover:text-white mr-4' %>
+
       <% end %>
     </div>
   </div>

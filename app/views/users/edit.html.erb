@@ -1,3 +1,4 @@
-<%= turbo_frame_tag :users do %>
+<%= turbo_frame_tag :main do %>
+  <%= turbo_flash_messages %>
   <%= render partial: 'users/form' %>
 <% end %>

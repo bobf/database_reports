@@ -5,7 +5,8 @@ class Report < ApplicationRecord
   acts_as_paranoid
 
   belongs_to :user
-  belongs_to :database
+  belongs_to :last_edited_by, class_name: 'User', foreign_key: :last_edited_by_user_id, required: false
+  belongs_to :database, required: false
 
   validates_presence_of :name
   validates_presence_of :subject
@@ -69,7 +70,7 @@ class Report < ApplicationRecord
   end
 
   def output
-    @output ||= ReportRecord.select_all(query)
+    @output ||= ReportRecord.select_all(database, query)
   end
 
   def filename

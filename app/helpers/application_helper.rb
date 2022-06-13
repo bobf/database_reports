@@ -6,14 +6,26 @@ module ApplicationHelper
     { 'new' => 'Create', 'create' => 'Create', 'update' => 'Update', 'edit' => 'Update' }.fetch(action_name)
   end
 
+  def database_configured?
+    Database.count.positive?
+  end
+
+  def database_adapter_options
+    Database.adapters.map { |adapter| [adapter[:label], adapter[:name]] }
+  end
+
+  def database_connection_options
+    Database.order(:created_at).map { |database| [database.name, database.id] }
+  end
+
   def turbo_flash_messages
     turbo_stream.replace 'flash_messages' do
       render partial: 'shared/flash_messages'
     end
   end
 
-  def link(title, path)
-    link_to title, path, class: 'text-purple-500', data: { turbo_action: 'advance' }
+  def link(title, path, options = {})
+    link_to title, path, class: "text-purple-500 #{options[:class]}", data: { turbo_action: 'advance' }
   end
 
   def submit_class
@@ -30,7 +42,8 @@ module ApplicationHelper
   end
 
   # rubocop:disable Metrics/ParameterLists
-  def button(title, path, color: 'blue', classes: [], confirm: nil, method: nil, turbo: true)
+  def button(title, path, options = {}, color: 'blue', classes: [], confirm: nil, method: nil, turbo: true)
+    classes += options[:class].split if options[:class].present?
     classes_with_defaults = [button_class(color:)] + classes
     link_to title, path, class: classes_with_defaults.join(' '),
                          data: { turbo:, turbo_action: 'advance', turbo_method: method, turbo_confirm: confirm }

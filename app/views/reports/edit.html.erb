@@ -1,13 +1,19 @@
-<%= turbo_frame_tag :reports do %>
-  <div class="container">
-    <% if current_user.admin? %>
-      <h2 class="font-medium leading-tight text-2xl mt-0 mb-3">
-        Created by:
-        <span class="text-purple-500"><%= @report.user_display %></span>
-      </h2>
-    <% end %>
+<%= turbo_frame_tag :main do %>
+  <%= turbo_flash_messages %>
+  <% if database_configured? %>
     <div class="container">
-      <%= render partial: 'reports/form' %>
+      <% if current_user.admin? %>
+        <h2 class="font-medium leading-tight text-2xl mt-0 mb-3">
+          Created by:
+          <span class="text-purple-500"><%= @report.user_display %></span>
+        </h2>
+      <% end %>
+      <div class="container">
+        <%= render partial: 'reports/form' %>
+      </div>
     </div>
-  </div>
+
+  <% else %>
+    <p>You must configure a database before this report can be edited.</p>
+  <% end %>
 <% end %>

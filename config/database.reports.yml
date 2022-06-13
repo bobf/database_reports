@@ -24,11 +24,3 @@ test:
   <% if ENV.key?('TEST_REPORTS_DATABASE_URL') %>
   url: <%= ENV['TEST_REPORTS_DATABASE_URL'] %>
   <% end %>
-
-staging:
-  <<: *default
-  url: <%= ENV['REPORTS_DATABASE_URL'] %>
-
-production:
-  <<: *default
-  url: <%= ENV['REPORTS_DATABASE_URL'] %>

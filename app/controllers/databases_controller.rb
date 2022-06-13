@@ -3,6 +3,7 @@
 # CRUD actions for database configurations.
 class DatabasesController < ApplicationController
   before_action :authorize_admin
+  rescue_from ActiveRecord::RecordNotFound, with: -> { render :index }
 
   def index
     @databases = Database.order(created_at: :desc)
@@ -13,6 +14,7 @@ class DatabasesController < ApplicationController
   end
 
   def new
+    @database = Database.new
   end
 
   def create
@@ -25,6 +27,7 @@ class DatabasesController < ApplicationController
   end
 
   def edit
+    @database = Database.find(params[:id])
   end
 
   def update
@@ -34,6 +37,12 @@ class DatabasesController < ApplicationController
     else
       render :edit
     end
+  end
+
+  def destroy
+    Database.find(params[:id]).destroy
+    flash[:notice] = 'Database configuration deleted.'
+    render :index
   end
 
   private

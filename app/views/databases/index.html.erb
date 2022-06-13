@@ -1,21 +1,27 @@
-<%= turbo_frame_tag :databases do %>
-  <table class="databases">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Host</th>
-        <th>Database</th>
-      </tr>
-    </thead>
+<%= turbo_frame_tag :main do %>
+  <%= turbo_flash_messages %>
+  <%= h1('Databases') %>
+  <%= button 'Create New Database', new_database_path, color: 'blue', classes: %w[my-3] %>
 
-    <tbody>
-      <% @databases.each do |database| %>
+  <% if @databases.present? %>
+    <table class="databases table-auto">
+      <thead>
         <tr>
-          <td><%= database.name %></td>
-          <td><%= database.host %>:<%= database.port %></td>
-          <td><%= database.database %></td>
+          <th class="px-4 py-2">Name</th>
+          <th class="px-4 py-2">Host</th>
+          <th class="px-4 py-2">Database</th>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
+      </thead>
+
+      <tbody>
+        <% @databases.each do |database| %>
+          <tr>
+            <td class="px-4 py-2"><%= link database.name, database_path(database) %></td>
+            <td class="px-4 py-2 font-mono"><%= database.host %>:<%= database.port %></td>
+            <td class="px-4 py-2 font-mono"><%= database.database %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
 <% end %>

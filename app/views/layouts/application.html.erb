@@ -11,10 +11,12 @@
   </head>
 
   <body class="bg-slate-900 text-slate-300 max-h-full">
-      <%= render partial: 'shared/navbar' %>
+    <%= render partial: 'shared/navbar' %>
 
-      <main class="container mx-auto mt-28 px-5 flex">
-        <%= yield %>
-      </main>
+
+    <div id="react-database-inspector" class="float-right"></div>
+    <main class="container mx-auto mt-28 px-5 flex">
+      <%= yield %>
+    </main>
   </body>
 </html>

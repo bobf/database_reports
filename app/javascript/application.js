@@ -1,10 +1,10 @@
 // Configure your import map in config/importmap.rb. Read more: https://github.com/rails/importmap-rails
 import "controllers";
+import "bundle";
 
 import { Turbo } from "@hotwired/turbo-rails";
 
 Turbo.session.drive = true;
-console.log(Turbo.session);
 
 window.addEventListener('turbo:load', () => {
   document.querySelectorAll('input.schedule-type').forEach((item) => {

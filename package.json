@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "esbuild": "^0.14.43",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0"
+  },
+  "scripts": {
+    "build": "esbuild app/javascript/app.js --bundle --outfile=app/javascript/bundle.js  --minify --target=chrome58,firefox57,safari11,edge16",
+    "watch": "esbuild app/javascript/app.js --outfile=app/javascript/bundle.js --bundle --watch"
+  }
+}

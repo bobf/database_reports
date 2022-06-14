@@ -7,6 +7,6 @@ class ApplicationController < ActionController::Base
   def authorize_admin
     return if current_user&.admin?
 
-    render template: 'shared/not_authorized'
+    render template: 'shared/not_authorized', status: :forbidden
   end
 end

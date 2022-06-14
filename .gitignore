@@ -11,6 +11,9 @@
 /db/*.sqlite3
 /db/*.sqlite3-*
 
+/node_modules/*
+/app/javascript/bundle.js
+
 # Ignore all logfiles and tempfiles.
 /log/*
 /tmp/*

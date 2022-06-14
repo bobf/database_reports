@@ -206,4 +206,47 @@ RSpec.describe '/databases' do
       end
     end
   end
+
+  describe 'GET /databases/:id.json' do
+    let!(:database) { create(:database, name: 'my database') }
+
+    context 'admin user' do
+      let(:user) { create(:user, admin: true) }
+
+      it 'returns database name' do
+        get "/databases/#{database.id}.json"
+        expect(json.dig(:database, :name)).to eql 'my database'
+      end
+
+      it 'returns database tables' do
+        get "/databases/#{database.id}.json"
+        expect(json.dig(:database, :tables)).to eql(
+          {
+            example_table: {
+              columns: [
+                { name: 'id', type: 'integer' },
+                { name: 'example_column', type: 'string' },
+                { name: 'created_at', type: 'datetime' },
+                { name: 'updated_at', type: 'datetime' }
+              ]
+            }
+          }
+        )
+      end
+    end
+
+    context 'non-admin user' do
+      let(:user) { create(:user) }
+
+      it 'does not return database information' do
+        get "/databases/#{database.id}.json"
+        expect(document.table('.databases')).to_not match_text 'my database'
+      end
+
+      it 'renders 403 Forbidden' do
+        get "/databases/#{database.id}.json"
+        expect(response).to have_http_status :forbidden
+      end
+    end
+  end
 end

@@ -25,4 +25,8 @@ class Database < ApplicationRecord
   def password=(val)
     super unless val.blank?
   end
+
+  def tables
+    ReportRecord.database_tables(self)
+  end
 end

@@ -20,8 +20,10 @@ Rails.application.configure do
   config.action_mailer.smtp_settings = {
     address: ENV.fetch('MAILER_SMTP_HOST', nil),
     port: ENV.fetch('MAILER_SMTP_PORT', '25'),
-    domain: ENV.fetch('MAILER_SMTP_DOMAIN', 'example.com')
-  }
+    domain: ENV.fetch('MAILER_SMTP_DOMAIN', 'example.com'),
+    user_name: ENV.fetch('MAILER_SMTP_USER', nil),
+    password: ENV.fetch('MAILER_SMTP_PASSWORD', nil)
+  }.compact
   config.action_mailer.perform_caching = false
   config.i18n.fallbacks = true
   config.active_support.report_deprecations = false

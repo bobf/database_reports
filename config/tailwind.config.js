@@ -38,6 +38,7 @@ module.exports = {
     'px-4',
     'inline-block',
     'mt-0',
+    'mt-3',
     'mb-2',
     'leading-tight',
     'font-medium',

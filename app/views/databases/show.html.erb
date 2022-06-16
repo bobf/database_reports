@@ -36,6 +36,6 @@
 
   <div class="container px-2 py-3">
     <%= button 'Configure Database', edit_database_path(@database), color: 'yellow', classes: %w[mt-3] %>
-    <%= button 'Delete Database', database_path(@database), method: :delete, confirm: 'Are you sure?', color: 'red' %>
+    <%= button 'Delete Database', database_path(@database), method: :delete, confirm: 'Are you sure?', color: 'red', classes: %w[mt-3] %>
   </div>
 <% end %>

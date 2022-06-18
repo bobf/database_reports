@@ -33,9 +33,9 @@
 
   <div class="flex flex-wrap -mx-3 mb-6">
     <div class="w-full px-3">
-      <%= form.label 'Database Schema *', class: label_class %>
+      <%= form.label 'Database Name *', class: label_class %>
       <%= form.text_field :database, class: input_class %>
-      <p class="<%= info_class %>">Database schema to connect to.</p>
+      <p class="<%= info_class %>">Name of the database to connect to.</p>
       <% if @database.errors[:database].present? %>
         <p class="<%= error_class %>">Database <%= @database.errors[:database].join(', ') %></p>
       <% end %>
@@ -53,7 +53,7 @@
     </div>
 
     <div class="w-full md:w-1/2 px-3">
-      <%= form.label 'Database Password *', class: label_class %>
+      <%= form.label 'Database Password', class: label_class %>
       <%= form.password_field :password, class: input_class %>
       <p class="<%= info_class %>">Password to use for database authentication.</p>
       <% if @database.errors[:password].present? %>

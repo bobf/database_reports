@@ -3,6 +3,8 @@
 RSpec.describe '/databases' do
   before { sign_in user }
 
+  before { travel_to Time.new(2022, 1, 1, 11, 0, 0) }
+
   describe 'GET /databases' do
     context 'admin user' do
       let(:user) { create(:user, admin: true) }
@@ -34,6 +36,7 @@ RSpec.describe '/databases' do
     let(:database_params) do
       {
         name: 'my database',
+        adapter: 'mysql2',
         database: 'my_database',
         username: 'user',
         password: 'password',

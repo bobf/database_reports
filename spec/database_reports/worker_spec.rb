@@ -7,6 +7,8 @@ RSpec.describe DatabaseReports::Worker do
     let(:mail) { ActionMailer::Base.deliveries.last }
     let(:now) { Time.now.utc }
 
+    before { travel_to Time.new(2022, 1, 1, 11, 0, 0) }
+
     it 'dispatches weekly scheduled jobs' do
       create(:report, schedule_type: 'weekly', schedule_day: now.wday, schedule_time: now)
       subject.work(once: true)

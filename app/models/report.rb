@@ -9,7 +9,6 @@ class Report < ApplicationRecord
   belongs_to :database, required: false
 
   validates_presence_of :name
-  validates_presence_of :subject
   validates_presence_of :query
   validate :validate_schedule_time
 
@@ -34,10 +33,14 @@ class Report < ApplicationRecord
 
   FILENAME_CHARACTERS = ('a'..'z').to_a + ('A'..'Z').to_a + ['0'..'9'].to_a + [' '] + %w[-_()]
 
+  def subject
+    self[:subject].presence || name
+  end
+
   def due?
-    return false if translated_schedule_time.blank?
-    return false if now < translated_schedule_time
-    return false if last_reported_at.present? && last_reported_at >= translated_schedule_time
+    return false if normalized_schedule_time.blank?
+    return false if now < normalized_schedule_time
+    return false if last_reported_at.present? && last_reported_at >= normalized_schedule_time
 
     true
   end
@@ -54,15 +57,15 @@ class Report < ApplicationRecord
   end
 
   def to_recipients=(val)
-    super(translated_email_addresses(val))
+    super(normalized_email_addresses(val))
   end
 
   def cc_recipients=(val)
-    super(translated_email_addresses(val))
+    super(normalized_email_addresses(val))
   end
 
   def bcc_recipients=(val)
-    super(translated_email_addresses(val))
+    super(normalized_email_addresses(val))
   end
 
   def csv
@@ -83,7 +86,7 @@ class Report < ApplicationRecord
     name.chars.select { |char| FILENAME_CHARACTERS.include?(char) }.join
   end
 
-  def translated_email_addresses(addresses)
+  def normalized_email_addresses(addresses)
     return addresses unless addresses.is_a?(String)
 
     addresses.split(',').map(&:strip)
@@ -93,7 +96,7 @@ class Report < ApplicationRecord
     @now ||= Time.now.utc
   end
 
-  def translated_schedule_time
+  def normalized_schedule_time
     case schedule_type
     when 'daily'
       daily_schedule_time

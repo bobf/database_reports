@@ -10,9 +10,9 @@
     </div>
 
     <div class="w-full md:w-1/2 px-3">
-      <%= form.label 'Email Subject *', class: label_class %>
+      <%= form.label 'Email Subject', class: label_class %>
       <%= form.text_field :subject, class: input_class %>
-      <p class="<%= info_class %>">Email subject for report mailings.</p>
+      <p class="<%= info_class %>">Optional: Email subject for report mailings (report Name will be used as subject if blank).</p>
       <% if @report.errors[:subject].present? %>
         <p class="<%= error_class %>">Subject <%= @report.errors[:subject].join(', ') %></p>
       <% end %>

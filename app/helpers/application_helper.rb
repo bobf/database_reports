@@ -69,6 +69,10 @@ module ApplicationHelper
     'bg-gray-700 text-gray-300 border rounded focus:outline-none'
   end
 
+  def nav_active_class(option)
+    controller_name == option.to_s ? 'font-bold' : nil
+  end
+
   # rubocop:disable Metrics/MethodLength
   def input_class
     classes = %w[
@@ -88,10 +92,10 @@ module ApplicationHelper
   # rubocop:enable Metrics/MethodLength
 
   def info_class
-    'text-gray-400 text-xs italic'
+    'text-gray-200 text-xs italic'
   end
 
   def error_class
-    'text-red-600 text-xs italic'
+    'text-red-300 text-xs italic'
   end
 end

@@ -17,6 +17,7 @@ module DatabaseReports
 
     def process_reports
       Report.due.each do |report|
+        log_export report:, export_context: 'scheduled_export'
         deliver_report(report)
       rescue *DatabaseReports::EXPECTED_DATABASE_ERRORS => e
         deliver_error(report, e)
@@ -41,6 +42,14 @@ module DatabaseReports
 
       ReportMailer.with(report:, error:).error_mail.deliver_now
       report.update!(failure_last_notified_at: Time.now.utc)
+    end
+
+    def log_export(report:, export_context:)
+      ReportExport.create!(report:, export_context:, user: report.user, data: report_data(report))
+    end
+
+    def report_data(report)
+      { columns: report.output.columns.map { |column| { name: column } }, rows: report.output.rows }
     end
   end
 end

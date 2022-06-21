@@ -24,6 +24,10 @@ module ApplicationHelper
     end
   end
 
+  def format_datetime(val)
+    val&.strftime('%Y-%m-%d %H:%M:%S UTC')
+  end
+
   def link(title, path, options = {})
     link_to title, path, class: "text-purple-500 #{options[:class]}", data: { turbo_action: 'advance' }
   end

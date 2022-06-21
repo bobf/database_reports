@@ -20,8 +20,8 @@
           -
         <% end %>
       </td>
-      <td class="px-4 py-2"><%= report.updated_at.strftime('%Y-%m-%d %H:%M UTC') %></td>
-      <td class="px-4 py-2"><%= report.last_reported_at&.strftime('%Y-%m-%d %H:%M UTC') || 'Never' %></td>
+      <td class="px-4 py-2"><%= format_datetime(report.updated_at) %></td>
+      <td class="px-4 py-2"><%= format_datetime(report.last_reported_at) || 'Never' %></td>
       <% if current_user.admin? %>
         <td class="<%= 'font-bold text-purple-700' if report.user.present? %>"><%= report.user_display %></td>
       <% end %>

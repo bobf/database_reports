@@ -1,23 +1,29 @@
 <div class="container">
-  <%= render partial: 'shared/summary', locals: { report_url:, max_rows:, max_columns: } %>
 
-  <div class="container">
-    <table class="report-view">
-      <thead>
-        <% (max_columns.nil? ? @output.columns : @output.columns.first(max_columns)).each do |column| %>
-          <th class="font-mono px-3 py-3 border"><%= column %></th>
-        <% end %>
-      </thead>
+  <% unless @output.columns.present? && @output.rows.present? %>
+    <%= h1 'Data format error' %>
+    <p class="text-red-500">Unable to read report data.</p>
+  <% else %>
+    <%= render partial: 'shared/summary', locals: { report_url:, max_rows:, max_columns: } %>
 
-      <tbody>
-        <% (max_rows.nil? ? @output.rows : @output.rows.first(max_rows)).each do |row| %>
-          <tr>
-            <% (max_columns.nil? ? row : row.first(max_columns)).each do |value| %>
-              <td class="font-mono text-xs border px-3 py-3"><%= value %></td>
-            <% end %>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-  </div>
+    <div class="container">
+      <table class="report-view">
+        <thead>
+          <% (max_columns.nil? ? @output.columns : @output.columns.first(max_columns)).each do |column| %>
+            <th class="font-mono px-3 py-3 border"><%= column %></th>
+          <% end %>
+        </thead>
+
+        <tbody>
+          <% (max_rows.nil? ? @output.rows : @output.rows.first(max_rows)).each do |row| %>
+            <tr>
+              <% (max_columns.nil? ? row : row.first(max_columns)).each do |value| %>
+                <td class="font-mono text-xs border px-3 py-3"><%= value %></td>
+              <% end %>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% end %>
 </div>

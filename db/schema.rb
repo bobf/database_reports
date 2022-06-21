@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_06_13_184525) do
+ActiveRecord::Schema[7.0].define(version: 2022_06_21_174036) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -29,6 +29,17 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_13_184525) do
     t.uuid "user_id", null: false
     t.index ["name"], name: "index_databases_on_name"
     t.index ["user_id"], name: "index_databases_on_user_id"
+  end
+
+  create_table "report_exports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "report_id", null: false
+    t.uuid "user_id", null: false
+    t.string "export_context"
+    t.jsonb "data"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["report_id"], name: "index_report_exports_on_report_id"
+    t.index ["user_id"], name: "index_report_exports_on_user_id"
   end
 
   create_table "reports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

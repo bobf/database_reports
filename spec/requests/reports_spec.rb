@@ -161,6 +161,98 @@ RSpec.describe '/reports' do
     end
   end
 
+  describe 'GET /reports/:id/exports/:export_id' do
+    let!(:report) { create(:report, user:, report_exports: [export]) }
+    let(:export) { build(:report_export, data: { columns: [{ name: 'col01' }], rows: [['val01']] }) }
+
+    it 'shows report export output columns' do
+      get "/reports/#{report.id}/exports/#{report.report_exports.first.id}"
+      expect(document.table('.report-view')).to match_text 'col01'
+    end
+
+    it 'shows report output values' do
+      get "/reports/#{report.id}/exports/#{report.report_exports.first.id}"
+      expect(document.table('.report-view')).to match_text 'val01'
+    end
+
+    it "rejects access to other user's reports" do
+      report = create(:report, user: create(:user))
+      get "/reports/#{report.id}/exports/#{report.report_exports.first.id}"
+      expect(document).to match_text 'you are not authorized to access'
+    end
+
+    context 'admin user' do
+      let(:user) { create(:user, admin: true) }
+
+      it 'shows report output values' do
+        report = create(:report, user: create(:user), report_exports: [build(:report_export)])
+        get "/reports/#{report.id}/exports/#{report.report_exports.first.id}"
+        expect(document.table('.report-view')).to match_text 'example value'
+      end
+    end
+  end
+
+  describe 'GET /reports/:id/exports/:export_id/export' do
+    let(:csv) { CSV.parse(response.body) }
+    let!(:report) { create(:report, user:, report_exports: [export]) }
+    let(:export) { build(:report_export, data: { columns: [{ name: 'col01' }], rows: [['val01']] }) }
+
+    it 'shows report export output columns' do
+      get "/reports/#{report.id}/exports/#{report.report_exports.first.id}/export"
+      expect(csv.first.first).to eql 'col01'
+    end
+
+    it 'shows report output values' do
+      get "/reports/#{report.id}/exports/#{report.report_exports.first.id}/export"
+      expect(csv.last.first).to eql 'val01'
+    end
+
+    it "rejects access to other user's reports" do
+      report = create(:report, user: create(:user))
+      get "/reports/#{report.id}/exports/#{report.report_exports.first.id}/export"
+      expect(document).to match_text 'you are not authorized to access'
+    end
+
+    context 'admin user' do
+      let(:user) { create(:user, admin: true) }
+
+      it 'shows report output values' do
+        report = create(:report, user: create(:user), report_exports: [build(:report_export)])
+        get "/reports/#{report.id}/exports/#{report.report_exports.first.id}/export"
+        expect(csv.last.first).to eql 'example value'
+      end
+    end
+  end
+
+  describe 'GET /reports/:id/exports' do
+    let!(:report) { create(:report, user:, report_exports: [export]) }
+    let(:export) { build(:report_export, data: { columns: [{ name: 'col01' }], rows: [['val01']] }) }
+
+    it 'shows report exports' do
+      get "/reports/#{report.id}/exports"
+      expect(document.table('.exports').tbody.tr.size).to eql 1
+    end
+
+    context 'other user' do
+      let(:user) { create(:user) }
+
+      it "rejects access to other user's reports" do
+        report = create(:report, user: create(:user), report_exports: [build(:report_export)])
+        get "/reports/#{report.id}/exports"
+        expect(document).to match_text 'you are not authorized to access'
+      end
+    end
+
+    context 'admin user' do
+      let(:user) { create(:user, admin: true) }
+
+      it 'shows report exports' do
+        get "/reports/#{report.id}/exports"
+        expect(document.table('.exports').tbody.tr.size).to eql 1
+      end
+    end
+  end
+
   describe 'GET /reports/:id/view' do
     it 'shows report output columns' do
       report = create(:report, user:)
@@ -172,6 +264,11 @@ RSpec.describe '/reports' do
       report = create(:report, user:)
       get "/reports/#{report.id}/view"
       expect(document.table('.report-view')).to match_text 'example value'
+    end
+
+    it 'logs an export of the report' do
+      report = create(:report, user:)
+      expect { get "/reports/#{report.id}/view" }.to change { report.report_exports.count }.by 1
     end
 
     it "rejects access to other user's reports" do

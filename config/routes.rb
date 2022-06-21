@@ -12,6 +12,12 @@ Rails.application.routes.draw do
   root to: 'reports#index'
 
   resources :reports do
+    resources :exports do
+      member do
+        get 'export'
+      end
+    end
+
     member do
       get 'view'
       get 'export'

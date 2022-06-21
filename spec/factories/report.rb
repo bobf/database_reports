@@ -9,5 +9,6 @@ FactoryBot.define do
     schedule_type { 'none' }
     user
     database
+    report_exports { build_list(:report_export, 1) }
   end
 end

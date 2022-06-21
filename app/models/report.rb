@@ -7,6 +7,7 @@ class Report < ApplicationRecord
   belongs_to :user
   belongs_to :last_edited_by, class_name: 'User', foreign_key: :last_edited_by_user_id, required: false
   belongs_to :database, required: false
+  has_many :report_exports
 
   validates_presence_of :name
   validates_presence_of :query
@@ -80,11 +81,11 @@ class Report < ApplicationRecord
     "#{sanitized_name} #{Time.now.utc.strftime('%Y-%m-%d %H_%M_%S')}.csv"
   end
 
-  private
-
   def sanitized_name
     name.chars.select { |char| FILENAME_CHARACTERS.include?(char) }.join
   end
+
+  private
 
   def normalized_email_addresses(addresses)
     return addresses unless addresses.is_a?(String)

@@ -32,6 +32,7 @@ module.exports = {
     'bg-yellow-600',
     'bg-green-600',
     'bg-purple-600',
+    'bg-indigo-600',
     'align-middle',
     'mr-1',
     'py-2',

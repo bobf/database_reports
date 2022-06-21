@@ -1,7 +1,7 @@
 <% if format == :list %>
   <tr class="user">
     <td class="px-4 py-2"><%= link user.email, user_path(user) %></td>
-    <td class="px-4 py-2"><%= user.created_at.strftime('%Y-%m-%d %H:%M:%S UTC') %></td>
+    <td class="px-4 py-2"><%= format_datetime(user.created_at) %></td>
   </tr>
 <% else %>
   <% if @user.blank? %>
@@ -17,7 +17,7 @@
 
         <tr>
           <th class="px-4 py-2 text-left">Created At</th>
-          <td class="px-4 py-2"><%= @user.created_at.strftime('%Y-%m-%d %H:%M:%S UTC') %></td>
+          <td class="px-4 py-2"><%= format_datetime(@user.created_at) %></td>
         </tr>
 
         <tr>

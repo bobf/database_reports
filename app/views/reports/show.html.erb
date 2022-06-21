@@ -70,7 +70,7 @@
         <tr>
           <th class="px-4 py-3 text-left">Last Edited</th>
           <td class="px-4 py-3">
-            <%= @report.last_edited_at&.strftime('%Y-%m-%d %H:%M UTC') %>
+            <%= format_datetime(@report.last_edited_at) %>
             <% if current_user.admin? && @report.last_edited_by.present? %>
               (<%= link @report.last_edited_by.email, user_path(@report.last_edited_by) %>)
             <% end %>
@@ -80,14 +80,22 @@
         <tr>
           <th class="px-4 py-3 text-left">Last Emailed</th>
           <td class="px-4 py-3">
-            <%= @report.last_reported_at&.strftime('%Y-%m-%d %H:%M UTC') || 'Never' %>
+            <%= format_datetime(@report.last_reported_at) || 'Never' %>
+          </td>
+        </tr>
+
+        <tr>
+          <th class="px-4 py-3 text-left">Total Exports</th>
+          <td class="px-4 py-3">
+            <%= @report.report_exports.count %>
           </td>
         </tr>
       </tbody>
     </table>
     <div class="container px-2 py-3">
       <%= button 'Configure Report', edit_report_path(@report), color: 'yellow' %>
-      <%= button 'View Results', view_report_path(@report), color: 'green' %>
+      <%= button 'View History', report_exports_path(@report), color: 'indigo' %>
+      <%= button 'Run Query', view_report_path(@report), color: 'green' %>
       <%= button 'Export CSV', export_report_path(@report), color: 'purple', turbo: false %>
       <% if @report.to_recipients.present? %>
         <%= button 'Email Now', email_report_path(@report), turbo: false, color: 'blue' %>

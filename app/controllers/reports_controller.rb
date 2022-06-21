@@ -2,9 +2,10 @@
 
 # CRUD actions for database reports.
 class ReportsController < ApplicationController
+  include ReportsConcern
+
   before_action :authorize_report_owner, except: %i[new index create]
   rescue_from ActiveRecord::RecordNotFound, with: :report_not_found
-  helper_method :current_reports
 
   def index; end
 
@@ -45,6 +46,7 @@ class ReportsController < ApplicationController
   end
 
   def view
+    log_export :web_view
     @report = report
     @output = report.output
   rescue *database_errors => e
@@ -52,6 +54,7 @@ class ReportsController < ApplicationController
   end
 
   def export
+    log_export :web_export
     send_data report.csv, type: 'text/csv', disposition: 'attachment', filename: report.filename
   rescue *database_errors => e
     @error = e.message
@@ -59,6 +62,7 @@ class ReportsController < ApplicationController
   end
 
   def email
+    log_export :web_email
     @report = report
     ReportMailer.with(report: @report).report_mail.deliver_now
     flash[:notice] = "Report delivered to #{@report.to_recipients.join(', ')} &check;"
@@ -68,40 +72,17 @@ class ReportsController < ApplicationController
     render :view
   end
 
-  def report_not_found
-    render template: 'reports/not_found'
-  end
-
   private
 
   def report
     @report ||= Report.find(params[:id])
   end
 
-  def current_reports
-    @current_reports ||= if current_user.admin?
-                           Report.all
-                         else
-                           current_user.reports
-                         end.order(created_at: :desc)
+  def log_export(export_context)
+    ReportExport.create!(report:, export_context:, user: current_user, data: report_data)
   end
 
-  def report_params
-    params.require(:report)
-          .permit(
-            :name, :query, :to_recipients, :cc_recipients, :bcc_recipients, :subject,
-            :schedule_day, :schedule_time, :schedule_type, :database_id
-          )
-  end
-
-  def database_errors
-    DatabaseReports::EXPECTED_DATABASE_ERRORS
-  end
-
-  def authorize_report_owner
-    return if current_user&.admin?
-    return if current_user.present? && report&.user == current_user
-
-    report_not_found
+  def report_data
+    { columns: report.output.columns.map { |column| { name: column } }, rows: report.output.rows }
   end
 end

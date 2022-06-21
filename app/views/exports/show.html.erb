@@ -1,0 +1,11 @@
+<%= turbo_frame_tag :main do %>
+  <%= turbo_flash_messages %>
+  <% if @error.present? %>
+    <%= render partial: 'shared/error', locals: { report_url: report_path(@export.report) } %>
+  <% elsif @export&.data.blank? %>
+    <%= h1('Error fetching export data') %>
+    <p class="text-red-500 font-mono py-3">Data for this export is no longer available.</p>
+  <% else %>
+    <%= render partial: 'shared/report', locals: { report_url: report_path(@export.report), max_rows: nil, max_columns: nil } %>
+  <% end %>
+<% end %>

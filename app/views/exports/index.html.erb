@@ -1,0 +1,51 @@
+<%= turbo_frame_tag :main do %>
+  <%= turbo_flash_messages %>
+  <div class="container">
+    <div class="container mb-2">
+      <%= h1('Exports') %>
+      <h2 class="font-medium leading-tight text-2xl mt-0 mb-2 inline-block">
+        Report: <%= link @report&.name, report_path(@report) %></span>
+      </h2>
+      <% if current_user.admin? %>
+        <h2 class="font-medium leading-tight text-xl mt-0 mb-2 inline-block">
+          | Created by:
+          <%= link @report.user_display, user_path(@report.user) %></span>
+        </h2>
+      <% end %>
+    </div>
+
+    <div class="container">
+      <% if @exports.blank? %>
+        <p>No exports for this report yet.</p>
+      <% else %>
+        <table class="exports table-auto">
+          <thead>
+            <tr>
+              <th class="px-4 py-2">Created</th>
+              <th class="px-4 py-2">Type</th>
+              <% if current_user.admin? %>
+                <th class="px-4 py-2">Created By</th>
+              <% end %>
+              <th class="px-4 py-2"></th>
+              <th class="px-4 py-2"></th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <% @exports.each do |export| %>
+              <tr>
+                <td class="px-4 py-2 font-mono"><%= format_datetime(export.created_at) %></td>
+                <td class="px-4 py-2 font-mono"><%= export.export_context %></td>
+                <% if current_user.admin? %>
+                  <td class="px-4 py-2"><%= link export.user_display, user_path(export.user) %></td>
+                <% end %>
+                <td class="px-4 py-2"><%= button 'View', report_export_path(id: export.id, report_id: @report.id), color: 'blue' %></td>
+                <td class="px-4 py-2"><%= button 'Download', export_report_export_path(id: export.id, report_id: @report.id), turbo: false, color: 'purple' %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% end %>
+    </div>
+  </div>
+<% end %>

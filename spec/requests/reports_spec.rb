@@ -226,11 +226,32 @@ RSpec.describe '/reports' do
 
   describe 'GET /reports/:id/exports' do
     let!(:report) { create(:report, user:, report_exports: [export]) }
-    let(:export) { build(:report_export, data: { columns: [{ name: 'col01' }], rows: [['val01']] }) }
+    let(:export_user) { user }
+    let(:export) do
+      build(
+        :report_export,
+        user: export_user,
+        data: { columns: [{ name: 'col01' }],
+                rows: [['val01']] }
+      )
+    end
 
-    it 'shows report exports' do
-      get "/reports/#{report.id}/exports"
-      expect(document.table('.exports').tbody.tr.size).to eql 1
+    context 'export created by current user' do
+      let(:export_user) { user }
+
+      it 'shows export' do
+        get "/reports/#{report.id}/exports"
+        expect(document.table('.exports').tbody.tr.size).to eql 1
+      end
+    end
+
+    context 'export created by other user' do
+      let(:export_user) { create(:user) }
+
+      it 'shows export' do
+        get "/reports/#{report.id}/exports"
+        expect(document.table('.exports').tbody.tr.size).to eql 0
+      end
     end
 
     context 'other user' do

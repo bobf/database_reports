@@ -9,7 +9,7 @@ class ExportsController < ApplicationController
 
   def index
     @report = report
-    @exports = ReportExport.where(report:).order(created_at: :desc)
+    @exports = current_exports.order(created_at: :desc)
   end
 
   def show
@@ -31,5 +31,11 @@ class ExportsController < ApplicationController
 
   def report
     @report ||= Report.find(params[:report_id])
+  end
+
+  def current_exports
+    return ReportExport.where(report:) if current_user.admin?
+
+    ReportExport.where(report:, user: current_user)
   end
 end

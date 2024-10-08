@@ -19,10 +19,12 @@ Rails.application.configure do
   }
   config.action_mailer.smtp_settings = {
     address: ENV.fetch('MAILER_SMTP_HOST', nil),
-    port: ENV.fetch('MAILER_SMTP_PORT', '25'),
+    port: ENV.fetch('MAILER_SMTP_PORT', '25').to_i,
     domain: ENV.fetch('MAILER_SMTP_DOMAIN', 'example.com'),
     user_name: ENV.fetch('MAILER_SMTP_USER', nil),
     password: ENV.fetch('MAILER_SMTP_PASSWORD', nil)
+    enable_starttls: ENV.key?('MAILER_SMTP_STARTTLS'),
+    authentication: ENV.fetch('MAILER_SMTP_AUTHENTICATION', 'plain').to_sym,
   }.compact
   config.action_mailer.perform_caching = false
   config.i18n.fallbacks = true
